@@ -8,7 +8,7 @@
   - 이와 같은 속성에 따라, 가장 먼저 들어간 자료를 가장 먼저 꺼내게 된다. 이 속성을 선입선출(FIFO, First In First Out)이라고 부른다. 
   - 너비 우선 탐색(BFS)에서 사용한다.
   - 컴퓨터 버퍼에서 주로 사용
-![](https://m.blog.naver.com/c_18/10183843810?view=img_3)
+![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FzHUPa%2Fbtqx60VRYdp%2FQPMF62rkahGSL5tzl5TYbK%2Fimg.png)
 
 
 - **스택(stack)에서는 한쪽 끝에서만 자료를 넣고 뺼 수 있다.**
@@ -16,9 +16,9 @@
   - 스택은 전산학 전반적으로 사용한다. 함수 호출이 끝나고 이전 함수로 돌아갈 때, 이 함수 바로 이전의 함수로 돌아가기 위해서 컴퓨터 내부적으로 스택을 사용해 문맥(context)을 관리한다.
   - 깊이 우선 탐색(DFS)에서 사용한다.
   - 재귀적(Recursion) 함수를 호출 할 때 사용한다.
-![](https://m.blog.naver.com/c_18/10183843810?view=img_2)
+![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FchSIl3%2Fbtqx60O47Om%2Fg4dMrq8KSyobAkspK6JLJ0%2Fimg.png)
 
-- **덱(deque)는 양쪽 끝에서 자료들을 넣고 뺄 수 있는 자료 구조를 말한다.
+- **덱(deque)는 양쪽 끝에서 자료들을 넣고 뺄 수 있는 자료 구조를 말한다.**
   - 따라서 덱을 이용하면 스택과 큐를 모두 구현할 수 있다.
 
 ![](https://m.blog.naver.com/c_18/10184053861?view=img_1)
