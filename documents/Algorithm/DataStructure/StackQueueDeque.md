@@ -24,11 +24,13 @@
 ![](https://m.blog.naver.com/c_18/10184053861?view=img_1)
   
 자료구조에 자료를 넣는 작업을 푸쉬(push) 그리고 자료를 꺼내는 작업을 팝(pop)이라고 한다.
-큐와 스택은 각각 넣고 빼는 방향에 따라 푸쉬와 팝 연산을, 그리고 덱은 앞과 뒤에서 모두 푸쉬와 팝 연산을 지원한다. 
-**이들 연산은 모두 상수 시간, 즉 O(1)에 이루어져야 한다.**
+큐와 스택은 각각 넣고 빼는 방향에 따라 푸쉬와 팝 연산을, 그리고 덱은 앞과 뒤에서 모두 푸쉬와 팝 연산을 지원한다. 특정 쪽에서만 삽입 삭제 연산이 이루어지므로 **연결 리스트**로 구현해야 한다. **이들 연산은 모두 상수 시간, 즉 O(1)에 이루어져야 하기 때문이다.**
 
 
 ## 참고 자료
 [더넬의 알짜정보!](https://m.blog.naver.com/c_18/10184053861)
 
 [IT 내맘대로 끄적끄적](http://itnovice1.blogspot.com/2019/01/blog-post.html)
+
+[자주 참고하는 블로그](https://blog.naver.com/PostView.nhn?blogId=kks227&logNo=220781557098&categoryNo=299&parentCategoryNo=0&viewDate=&currentPage=12&postListTopCurrentPage=1&from=menu&userTopListOpen=true&userTopListCount=5&userTopListManageOpen=false&userTopListCurrentPage=12)
+
