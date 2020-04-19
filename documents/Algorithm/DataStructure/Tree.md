@@ -83,3 +83,44 @@ struct TreeNode{
 };
 
 ```
+
+위의 객체 TreeNode는 특정 구조나 형태를 가정하지 않는다. 즉, 어떤 형태의 트리라도 트리의 가장 기초적인 조건을 충족하기만 한다면 표현할 수 있다는 것.
+
+
+#### 1.2 트리의 순회
+
+자료 구조의 가장 기초적인 연산 중 하나는 포함되어 있는 자료를 전부 순회하는 것이다. 그러나 선형으로 구성된 배열과 달리 트리는 그 구조가 일정하지 않기 때문에 포함된 모든 자료들을 순회하기가 쉽지 않다. 이와 같은 일을 쉽게 하기 위해서는 트리의 재귀적인 속성을 이용해야 한다. 
+
+
+
+```c++
+//주어진 트리의 각 노드에 저장된 값을 모두 출력한다.
+void printLabels(TreeNode* root){
+  // 루트에 저장된 값을 출력한다.
+  cout << root->label << endl;
+  // 각 자손들을 루트로 하는 서브트리에 포함된 값들을 재귀적으로 출력한다.
+  for(int i=0; i<root->children.size(); ++i)
+    printLabels(root->children[i]);
+}
+```
+
+
+```c++
+//root를 루트로 하는 트리의 높이를 구한다.
+int height(TreeNode* root){
+  int h = 0;
+  for(int i=0; i<root->children.size(); ++i)
+    h = max(h, 1 + height(root->children[i]));
+  return h;
+}
+```
+
+이러한 트리의 순회는 n개의 노드가 있다고 한다면 모두 순회하기 위해서 O(n)의 시간이 든다. 
+
+
+## 2. 이진 검색 트리
+
+
+
+
+
