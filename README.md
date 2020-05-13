@@ -16,17 +16,38 @@
 ## 🌈 [알고리즘](https://github.com/Rurril/TIL/tree/master/Algorithm)
 
 - [시간복잡도](https://github.com/Rurril/TIL/blob/master/Algorithm/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%EC%9D%98%20%EC%8B%9C%EA%B0%84%20%EB%B3%B5%EC%9E%A1%EB%8F%84%20%EB%B6%84%EC%84%9D.md)
+- [너비 / 깊이 우선 탐색]()
+- [브루트 포스]()
+  - 예정
+- [동적 계획법]()
+  - 예정
+- [이진 탐색](https://github.com/Rurril/TIL/blob/master/Algorithm/%EC%9D%B4%EC%A7%84%ED%83%90%EC%83%89.md)
 - [백트래킹](https://github.com/Rurril/TIL/blob/master/Algorithm/Backtracking.md)
 - [탐욕 알고리즘](https://github.com/Rurril/TIL/blob/master/Algorithm/%EA%B7%B8%EB%A6%AC%EB%93%9C%20%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98.md)
+- [문자열 처리]()
+  - 예정
+- [수학]()
+  - 유클리드 호제법(예정)
+  - 정렬(예정)
 - [분할 정복](https://github.com/Rurril/TIL/blob/master/Algorithm/%EB%B6%84%ED%95%A0%EC%A0%95%EB%B3%B5.md)
 - [좌표압축 알고리즘](https://github.com/Rurril/TIL/blob/master/Algorithm/%EC%A2%8C%ED%91%9C%EC%95%95%EC%B6%95%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98.md)
-- [최단 경로 알고리즘](https://github.com/Rurril/TIL/blob/master/Algorithm/%EC%B5%9C%EB%8B%A8%EA%B2%BD%EB%A1%9C%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98.md)
+- [최단 경로](https://github.com/Rurril/TIL/blob/master/Algorithm/%EC%B5%9C%EB%8B%A8%EA%B2%BD%EB%A1%9C%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98.md)
+  - 다익스트라 / 벨만-포드 / 플로이드 와샬(예정)
 - [Parametric Search]()
-  - 위의 세 개는 모두 이진탐색을 공부하면서 적용하는 응용 알고리즘 문제들..
- 
+  - 이진탐색을 공부하면서 적용하는 응용 알고리즘 문제들..
+  - 예정
+- [비트마스킹]()
+  - 예정
+- [투 포인터]()
+  - 예정
 
-## ☀️ [자료구조](https://github.com/Rurril/TIL/tree/master/Data_Structure)
+## 🖥 [자료구조](https://github.com/Rurril/TIL/tree/master/Data_Structure)
 
 - [스텍, 큐, 덱](https://github.com/Rurril/TIL/blob/master/Data_Structure/StackQueueDeque.md)
 - [트리](https://github.com/Rurril/TIL/blob/master/Data_Structure/Tree.md)
 - [선형 자료구조](https://github.com/Rurril/TIL/blob/master/Data_Structure/선형자료구조.md)
+
+
+## 🔥 [언어]()
+
+### 🏝 [Kotlin]()
