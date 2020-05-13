@@ -44,10 +44,14 @@
 ## 🖥 [자료구조](https://github.com/Rurril/TIL/tree/master/Data_Structure)
 
 - [스텍, 큐, 덱](https://github.com/Rurril/TIL/blob/master/Data_Structure/StackQueueDeque.md)
+  - [우선순위 큐](https://github.com/Rurril/TIL/blob/master/Data_Structure/PriorityQueue.md)
 - [트리](https://github.com/Rurril/TIL/blob/master/Data_Structure/Tree.md)
 - [선형 자료구조](https://github.com/Rurril/TIL/blob/master/Data_Structure/선형자료구조.md)
 
 
 ## 🔥 [언어]()
 
-### 🏝 [Kotlin]()
+### 🏝 [Kotlin](https://github.com/Rurril/TIL/blob/master/Language/Kotlin/README.md)
+
+Boost Course
+- Chapter 1...
