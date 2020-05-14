@@ -49,7 +49,7 @@ CS(Computer Science)에서, 우선순위 큐는 평범한 큐나 스택과 비�
 ![](https://miro.medium.com/max/1400/1*0Y4oWrfOyI5ZlE2lDJxQ0w.png)
 --최대 힙 트리--
 
-### 🤭 참고 문제
+## 🤭 참고 문제
 
 백준 온라인 저지
 - [11279 - 최대힙](https://www.acmicpc.net/problem/11279)
