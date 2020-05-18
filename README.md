@@ -40,6 +40,8 @@
   - 수정 중
 - [투 포인터]()
   - 예정
+- [에라토스테네스의 체](https://github.com/Rurril/TIL/blob/master/Algorithm/Eratosthenes.md)
+  - 예정
 
 ## 🖥 [자료구조](https://github.com/Rurril/TIL/tree/master/Data_Structure)
 
