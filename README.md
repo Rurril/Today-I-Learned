@@ -37,7 +37,7 @@
   - 이진탐색을 공부하면서 적용하는 응용 알고리즘 문제들..
   - 예정
 - [비트마스킹](https://github.com/Rurril/TIL/blob/master/Algorithm/%EB%B9%84%ED%8A%B8%EB%A7%88%EC%8A%A4%ED%82%B9.md)
-  - 예정
+  - 수정 중
 - [투 포인터]()
   - 예정
 
