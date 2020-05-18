@@ -1,5 +1,35 @@
 # 안드로이드 Essential - Kotlin
 
+## 목차 
+## 19. Collection - 실습
+## 20. 반복문 - 1
+## 21. 반복문 - 2
+## 22. 반복문 - 3
+## 23. 중간과제 - 설명
+## 24. 중간과제 - 풀이
+## 25. 클래스 - 1
+## 26. 클래스 - 2
+## 27. 클래스 - 3
+## 28. 클래스 - 4
+## 29. 클래스 - 5
+## 30. 중간과제 2 - 설명
+## 31. 중간과제 2 풀이 - 1
+## 32. 중간과제 2 풀이 - 2
+## 33. 중간과제 2 풀이 - 3
+## 34. 중간과제 2 풀이 - 4
+## 35. 전역, 지역 변수
+## 36. 접근 제어자
+## 37. 접근 제어자 - 실습
+## 38. 상속 개념
+## 40. 상속 과제 풀이
+## 41. 인터페이스 - 1
+## 42. 인퍼페이스 - 2
+## 43. 제너릭
+## 44. Java를 알아보자
+
+
+
+
 ## 01. 커리큘럼 소개, 지치지 않고, 완강을 위한 빅픽쳐
 
 [강사님 깃헙 주소](https://github.com/changja88/)
@@ -266,6 +296,49 @@ fun main() {
 
 
 ## 18. Collection
+```kotlin
+fun main() {
+
+    // List
+    //Immutable collection -- 한 번 만들면 바꿀 수 없다.
+    // -> 중복을 허용한다.
+    val numberList = listOf<Int>(1,2,3)
+    println(numberList)
+
+    // Set
+    // -> 중복을 허용하지 않는다.
+    // -> 순서가 없다!
+    val numberSet = setOf<Int>(1,2,3,3,3) // set은 중복을 허용하지 않는다.
+    numberSet.forEach {
+        print(it)
+    }
+    println()
+
+
+    val numberMap = mapOf<String, Int>("one" to 1, "two" to 2)
+    println(numberMap)
+    for(key in numberMap.keys){
+        print("${numberMap.get(key)} ")
+    }
+    println()
+
+
+    // Mutable collection (변경가능)
+    val mNumberList = mutableListOf<Int>(1,2,3)
+    mNumberList.add(3, 4)
+    println("mNumberList : $mNumberList")
+
+    val mNumberSet = mutableSetOf<Int>(1,2,3,4,5,4,4)
+    mNumberSet.add(10)
+    println("mNumberSet : $mNumberSet")
+
+    val mNumberMap = mutableMapOf<String, Int>("one" to 1)
+    mNumberMap.put("two", 2)
+
+    println("mNumberMap : $mNumberMap")
+}
+```
+
 ## 19. Collection - 실습
 ## 20. 반복문 - 1
 ## 21. 반복문 - 2
