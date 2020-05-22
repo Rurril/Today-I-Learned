@@ -340,11 +340,162 @@ fun main() {
 ```
 
 ## 19. Collection - 실습
+
 ## 20. 반복문 - 1
+```kotlin
+fun main() {
+
+    // 하나 씩 반복해서 할 수 있는 것을 iterable하다 라고 할 수 있다.
+    val a = mutableListOf<Int>(1,2,3,4,5,6,7,8,9)
+
+    // 반복하는 방법 (1)
+    for(item in a){ // a의 값이 하나하나 item에 들어가게 된다.
+        println(item)
+    }
+
+    // 반복하는 방법 (2)
+    for((index, item) in a.withIndex()){
+        println("index : $index, value : $item")
+    }
+    
+}
+```
+
+
 ## 21. 반복문 - 2
+
+```kotlin
+    // 반복하는 방법 (3)
+    a.forEach{ item->
+        // 람다라는 문법이랍니다. 다른 것과는 다르게 forEach 구문이 it으로 정해버린다.
+        println(item)
+    }
+
+    // 반복하는 방법 (4)
+    a.forEach{ item->
+        // it이 싫을 때는 item -> 이런 식으로 하면 된다.
+        println(item)
+    }
+
+    // 반복하는 방법 (5) - 강사님 기준 제일 깔끔
+    a.forEachIndexed { index, item ->
+        println("index : $index, value : $item")
+    }
+
+    // 반복하는 방법 (6)
+    for( i in 0 until a.size){
+        // until은 마지막을 포함하지 않는다.
+        println("${a.get(i)}")
+    }
+
+    // 반복하는 방법 (7)
+    for( i in 0 until a.size step (2)){
+        // 2칸씩 뛰면서 간다.
+        println(a.get(i))
+    }
+
+    // 반복하는 방법 (8)
+    for(i in a.size-1 downTo (0)){
+        // a.size-1 (8)부터 0까지 반복한다.
+        println(a.get(i))
+    }
+
+    // 반복하는 방법 (9)
+    for(i in a.size-1 downTo (0) step (2)){
+        println(a.get(i))
+    }
+
+    // 반복하는 방법 (10)
+    for(i in 0..10){
+        // 0부터 10까지 간다.
+        // ..과 until의 차이점을 알아야 한다.
+        println(i)
+```
+
+
 ## 22. 반복문 - 3
+
+```kotlin
+// 반복하는 방법 (11)
+    var b: Int = 0
+    var c: Int = 4
+
+    while(b < c){
+        b++
+        println(b)
+    }
+
+    // 반복하는 방법 (12)
+    var d: Int = 0
+    var e: Int = 4
+    do{
+        println("Hello")
+        d++
+    }while(d < e)
+```
 ## 23. 중간과제 - 설명
+
+
+
+
 ## 24. 중간과제 - 풀이
+```kotlin
+fun main() {
+    solution4()
+
+}
+
+fun solution1(){
+
+    val list1 = mutableListOf<Int>()
+    for(i in 0 until 10){
+        list1.add(i)
+    }
+    val list2 = mutableListOf<Boolean>()
+    for(i in 0 until list1.size){
+        if(list1.get(i) % 2 == 0)list2.add(true)
+        else if(list1.get(i) % 2 == 1)list2.add(false)
+    }
+
+}
+
+fun solution2(score: Int):String{
+
+//    if(score >= 80 && score <= 90) return "A"
+//    else if(score >= 70) return "B"
+//    else if(score >= 70) return "C"
+//    else return "F"
+
+    when(score){
+        in 90..100 ->{
+            return "A"
+        }
+        in 80..89 -> {
+            return "B"
+        }
+        in 70..79 ->{
+            return "C"
+        }
+        else ->{
+            return "F"
+        }
+
+    }
+}
+
+fun solution3(number: Int): Int{
+    return (number/10) + (number % 10)
+}
+
+fun solution4(){
+
+    for(i in 1..9){
+        for(j in 1..9){
+            println("$i * $j = ${i*j}")
+        }
+    }
+}
+```
 ## 25. 클래스 - 1
 ## 26. 클래스 - 2
 ## 27. 클래스 - 3
