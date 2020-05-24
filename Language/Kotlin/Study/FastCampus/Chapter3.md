@@ -496,24 +496,442 @@ fun solution4(){
     }
 }
 ```
+
 ## 25. 클래스 - 1
+
+
+OOP -> Object Oriented Programming : 객체지향 프로그래밍
+객체란 뭘까?
+- 이름이 있는 모든 것
+
+절차지향 프로그래밍 문제 해결 방법
+- 코드를 위에서부터 아래로 실행을 하면 문제가 해결된다!
+
+객체지향 프로그래밍 문제 해결 방법
+- 객체를 만들어서, 객체에게 일을 시켜서 문제를 해결한다.
+- 선수, 심판, 경기장, 관중 -> 축구 게임
+
+객체를 만드는 방법
+- 설명서가 있어야 합니다.
+
 ## 26. 클래스 - 2
+
+```kotlin
+fun main() {
+    Car("V8 engine", "Big")
+    val bigCar = Car("V8 engine", "Big")
+
+    // 우리가 만든 클래스(설명서)는 자료형이 된다.
+    val bigCar1 : Car = Car("V8 engine", "Big")
+
+    val superCar: SuperCar = SuperCar("good engine", "big", "white")
+}
+// 클래스(설명서) 만드는 방법(1)
+class Car(var engine: String, var body: String){}
+
+// 클래스(설명서) 만드는 방법(2)
+
+class SuperCar{
+    var engine: String
+    var body: String
+    var door: String
+
+    constructor(engine: String, body: String, door: String){
+        this.engine = engine
+        this.body = body
+        this.door = door
+
+    }
+}
+```
+
 ## 27. 클래스 - 3
+
+
+```kotlin
+// 클래스(설명서) 만드는 방법(3) -> 1번 방법의 확장
+class Car1 constructor(engine: String, body: String){ // 생성자 키워드를 써도 되고 생략 가능
+    var door: String = ""
+
+    // 생성자
+    constructor(engine: String, body: String, door: String): this(engine, body){
+        // 필요한 것은 engine, body였고 추가적인 부분을 여기에 넘기도록 하는 것.
+        this.door = door
+    }
+}
+
+// 클래스(설명서) 만드는 방법(4) -> 2번 방법의 확장
+class Car2{
+    var engine: String = ""
+    var body: String = ""
+    var door: String = ""
+
+    constructor(engine: String, body: String){
+        this.engine = engine
+        this.body = body
+    }
+    
+    constructor(engine: String, body: String, door: String){
+        this.engine = engine
+        this.body = body
+        this.door = door
+    }
+
+}
+```
 ## 28. 클래스 - 4
+
+```kotlin
+fun main() {
+
+    // 인스턴스가 가지고 있는 기능을 사용하는 방법
+    val car: RunnableCar = RunnableCar("simple engine", "short body")
+    car.ride()
+    car.drive()
+    car.navi("집")
+
+    // 인스턴스의 맴버 변수에 접근하는 방법
+    val car2: Runnable2 = Runnable2("simple engine", "short body")
+    car2.engine = "nice engine"
+    println(car2.engine)
+
+}
+
+class RunnableCar(engine: String, body: String){
+
+    fun ride(){
+        println("탑승 완료했습니다.")
+    }
+    fun drive(){
+        println("달립니다 !")
+    }
+    fun navi(destination: String){
+        println("$destination 으로 목적지가 설정되었습니다.")
+    }
+}
+
+class Runnable2{
+    var engine: String
+    var body: String
+
+    constructor(engine: String, body: String){
+        this.engine = engine
+        this.body = body
+    }
+
+    init {// 이 객체를 만들게 되면, 무조건 실행되는 부분
+        // 초기 세팅을 할 때 유용하다.
+        println("객체가 생성되었습니다.")
+    }
+
+    fun ride(){
+        println("탑승 완료했습니다.")
+    }
+    fun drive(){
+        println("달립니다 !")
+    }
+    fun navi(destination: String){
+        println("$destination 으로 목적지가 설정되었습니다.")
+    }
+}
+```
 ## 29. 클래스 - 5
+
+```kotlin
+fun main() {
+    val test: TestClass = TestClass()
+    test.test(1)
+    test.test(2,3)
+
+}
+
+//오버로딩 -> 이름이 같지만 받는 파라미터가 다른 함수
+class TestClass{
+    val a: Int = 10
+    val b: Int = 10
+
+    fun test(a: Int){
+        println("up")
+    }
+    fun test(a: Int, b: Int){
+        println("down")
+    }
+
+}
+```
+
 ## 30. 중간과제 2 - 설명
+
+1. 사칙 연산을 수행할 수 있는 클래스
+2. 이행 계좌 만들기
+    - 계좌 생성 기능(이름, 생년월일)
+    - 잔고를 확인하는 기능
+    - 출금 기능
+    - 예금 기능
+3. TV 클래스
+    - on/off 기능
+    - 채널을 돌리는 기능
+    - 초기 채널은(S사, M사, K사 3개)
+
 ## 31. 중간과제 2 풀이 - 1
 ## 32. 중간과제 2 풀이 - 2
 ## 33. 중간과제 2 풀이 - 3
 ## 34. 중간과제 2 풀이 - 4
 ## 35. 전역, 지역 변수
+
+```kotlin
+package Kotlin
+
+var number: Int = 10
+
+fun main() {
+    val test = TestClass("myName")
+    test.testFun()
+    println(test.name)
+
+}
+// 변수의 접근 범위
+// 1. 전역 변수
+// 2. 지역 변수
+
+class TestClass(var name: String){
+
+    fun testFun(){
+        name = "JK"
+    }
+}
+```
+
 ## 36. 접근 제어자
+```kotlin
+package Kotlin
+
+fun main() {
+
+    val testAccess: TestAccess = TestAccess("Amugae")
+    // private 키워드 때문에 외부에서 사용할 수 없다.
+    // 오직 그 객체 안에서 다른 함수를 통해서만 사용할 수 있도록 만드는 것.
+//    testAccess.test()
+    println(testAccess.name)
+    testAccess.name = "Amugae2"
+    println(testAccess.name)
+
+    val reward: Reward = Reward()
+    // private로 선언을 함으로써 클래스 외부에서 접근할 수 없고 그 안의 키워드를 통해서만 접근할 수 있도록 만들 수 있다.
+//    reward.rewardAmount = 2000
+    reward.changeReward(2000)
+
+}
+
+class Reward{
+    private var rewardAmount: Int = 1000
+
+    fun changeReward(value: Int){
+        this.rewardAmount = value
+    }
+}
+
+class TestAccess{
+    var name:String = "Gil Dong"
+
+    constructor(name: String){
+        this.name = name
+    }
+
+    private fun test(){
+        println("test")
+    }
+
+}
+```
+
 ## 37. 접근 제어자 - 실습
+```kotlin
+package Kotlin
+
+fun main() {
+
+    val knight = Knight(20, 4)
+    val monster = Monster(15, 5)
+
+    knight.attack(monster)
+    monster.attack(knight)
+
+//    knight.hp = 100
+//    println(knight.hp) // 이런식으로 직접 접근해버리는 해킹이 발생한다고 한다면, 임의로 체력이 증가하는 말도안되는 코드가 나올 수 있다.
+    // 그래서 접근제어자를 활용해서 private를 통해서 접근할 수 없도록 한다.
+
+}
+
+class Knight(private var hp: Int, private var power: Int){
+
+    fun attack(monster: Monster){
+        monster.defense(power)
+    }
+    fun defense(damage: Int){
+        hp -= damage
+        if(hp > 0){
+            heal()
+            println("Knight's hp is : $hp")
+        }
+        else println("Knight is dead")
+    }
+    private fun heal(){
+        // 아무때나 사용하는 것이 아니라
+        // 공격을 당했을 때 힐을 사용하는 것이므로 이것 또한 defense에 종속되게 된다.
+        hp += 3
+    }
+}
+
+class Monster(private var hp: Int, private var power: Int){
+
+    fun attack(knight: Knight){
+        knight.defense(power)
+    }
+    fun defense(damage: Int){
+        hp -= damage
+        if(hp > 0)println("Monster's hp is : $hp")
+        else println("Monster is dead")
+    }
+}
+```
+
 ## 38. 상속 개념
+```kotlin
+package Kotlin
+
+fun main() {
+
+    // 두번까지는 봐준다.
+    // 두번 이상이 넘어가면 리펙토링 해라 - (같은 기능을 여러번)
+
+    // 25. 상속
+    // 부모로부터 설명서를 물려받는다.
+    val supercar: SuperCar1 = SuperCar1("good", "nice")
+    // 부모로부터 받은 기능을 사용할 수 있다. 
+    supercar.drive()
+    supercar.stop()
+}
+// private가 기본 default 설정이다.
+// 그래서 외부에서의 접근(상속)을 위해서 open 키워드를 써준다.
+open class Car(engine: String, body: String){
+    fun drive(){
+
+    }fun stop(){
+
+    }
+}
+
+// 부모 : Car
+// 자식 : SuperCar1
+class SuperCar1(engine: String, body: String) : Car() { // Car를 상속한다.
+
+}
+```
+## 39. 상속 실습
+```kotlin
+open class Car(engine: String, body: String){
+    // open을 통해서 오버라이드를 가능하게 한다.
+    open fun drive(): String{
+        return "Run"
+    }
+    fun stop(){
+
+    }
+}
+
+class SuperCar1(engine: String, body: String) : Car(engine, body) {
+    override fun drive(): String { // override 덮어쓰다.
+//        super.drive()
+        // 부모의 기능을 사용하지 않고 수정해서 사용하는 것 -- 이용해도 가능.
+        val run = super.drive()
+        return("$run fast")
+    }
+    //'stop' in 'Car' is final and cannot be overridden
+//    override fun stop() {
+//        super.stop()
+//    }
+}
+```
 ## 40. 상속 과제 풀이
 ## 41. 인터페이스 - 1
+```kotlin
+// interface가 가지고 있는 것들을 구현해주어야 한다. - 인터페이스는 약속
+// 생성자가 없다 -> 인스턴스화 시킬 수 없다. -> 설명서가 아니다.
+// 지침서 -> 이것을 구현하고 싶다면, 반드시 아래 기능을 구현해라.
+
+// 상속이(& Interface) 만들어내는 특징
+// - 자식 클래스는 부모 클래스의 타입이다
+// - 부모 클래스는 자식 클래스의 타입이 아니다.
+
+// 상속은 자식 클래스가 공통으로 가지고 있는 기능을 부모가 가지고 있는 경우, 사용하면 편하다.
+// 인터페이스는 그 기능이 있으면 되지만, 방법이나 구현 방식이 많이 다른 경우 사용하면 편하다.
+interface Person_{
+    fun eat()
+    fun sleep()
+}
+
+class Student_ : Person_ {
+    override fun eat() {
+        TODO("Not yet implemented")
+    }
+    override fun sleep() {
+        TODO("Not yet implemented")
+    }
+}
+open class Person(){
+    open fun eat(){
+
+    }
+    fun sleep(){
+
+    }
+}
+```
 ## 42. 인퍼페이스 - 2
+```kotlin
+interface Person_{
+    fun eat()
+
+    // 인터페이스도 구현이 있는 함수를 만들 수 있다.
+    // 인터페이스에 구현이 있는 함수는 그 인터페이스를 구현 하는 클래스에서 그 함수를 구현할 필요가 없다.
+    // 인터페이스에 구현이 없는 함수는 그 인터페이스를 구현하는 클래스에서 그 함수를 반드시 구현해야 한다.
+    fun sleep(){
+        println("let's study")
+    }
+    abstract fun study()// abstract를 통해서 반드시 구현을 해줘야하는 함수로 만든다.
+}
+
+class Student_ : Person_ {
+    override fun eat() {
+        TODO("Not yet implemented")
+    }
+
+    override fun study() {
+        TODO("Not yet implemented")
+    }
+}
+```
 ## 43. 제너릭
+```kotlin
+// Generic(제너릭)
+    // 목적 : 다양한 타입의 객체들을 다루는 메서드나 컬렉션
+    //       클래스에서 컴파일 시에 타입을 체크해주는 기능
+    // - 제너릭은 만들기 어렵고 실제로 만들 일이 거의 없기 때문에 사용하는 방법만 숙지
+
+    // 제너릭을 사용하지 않은 경우
+    // 형 변환을 해줘야 한다.
+    val list1 = listOf<>(1,2,3, "가")
+    val b: String = list1[2].toString() // 형변환(타입 변환)
+
+    // 제너릭을 사용하는 경우
+    val list2 = listOf<String>("a","b","c")
+    val c: String = list2[2] // 어느 인자를 가져오더라도 String이라는 것이 보장이 된다.
+
+    // 제너릭을 사용하지 않은 경우
+    val lsit5 = listOf<>(1,2,3,1.0,"가")
+    // --> Int , Float, String의 최고 부모 클래스로 올라가면, 'Any'라는 클래스가 된다. 즉, 이 리스트의 타입은 Any가 된다.
+```
 ## 44. Java를 알아보자
 
 
