@@ -49,7 +49,8 @@
   - [우선순위 큐](https://github.com/Rurril/TIL/blob/master/Data_Structure/PriorityQueue.md)
 - [트리](https://github.com/Rurril/TIL/blob/master/Data_Structure/Tree.md)
 - [선형 자료구조](https://github.com/Rurril/TIL/blob/master/Data_Structure/선형자료구조.md)
-
+- [서로소 집합(Disjoint Set) - 유니온 파인드(Union-Find)](https://github.com/Rurril/TIL/blob/master/Data_Structure/Disjoint_Set.md)
+  - 추가 수정 필요
 
 ## 🔥 [언어]()
 
