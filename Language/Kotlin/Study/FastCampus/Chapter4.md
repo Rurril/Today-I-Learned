@@ -35,6 +35,9 @@ Design 탭은 컴포넌트가 무엇이 있는지 확인하기 위해서 사용�
 
 ## 04. View component 실습
 
+
+
+
 ```XML
     <TextView
         android:layout_width="wrap_content"
@@ -52,48 +55,74 @@ Design 탭은 컴포넌트가 무엇이 있는지 확인하기 위해서 사용�
 
 - 단위 적용에서는 dp가 범용적으로 사용되는 것이 좋다. 
 ## 05. Linearlayout 개념
+
+> 뷰 컴포넌트 간에 부모 자식 관계가 존재한다.
+
+> 부모 컴포넌트가 될 수 없는 것들도 존재한다. 
+
+Layouts <- 부모 컴포넌트들이 될 수 있는 것들
+
+Comtainers <- 부모 컴포넌트가 될 수 있는 것들
+
+부모 컴포넌트 : 주로 화면에 나오지 않고, 화면을 구성하는 역할을 한다.
+자식 컴포넌트 : 주로 화면에 나와서 보여주는 역할. 
+
+> 부모 컴포넌트는 자식 컴포넌트들의 배치를 정할 수 있다.
+
+> 같은 속성들을 적용할 때는, 작은 범위의 속성이 우선 적용된다. (자식 컴포넌트의 속성이 먼저 적용이라는 것)
+
+> 속성 - match_parent : 부모 컴포넌트에 꽉 맞추겠다.
+
+> 속성 - wrap_parent : 해당 뷰가 그려질 수 있게 **필요한 길이만** 사용한다.
+
+
 ## 06. Linearlayout 실습
-## 07.
-## 08.
-## 09.
-## 10.
-## 11.
-## 12.
-## 13.
-## 14.
-## 15.
-## 16.
-## 17.
-## 18.
-## 19.
-## 20.
-## 21.
-## 22.
-## 23.
-## 24.
-## 25.
-## 26.
-## 27.
-## 28.
-## 29.
-## 30.
-## 31.
-## 32.
-## 33.
-## 34.
-## 35.
-## 36.
-## 37.
-## 38.
-## 39.
-## 40.
-## 41.
-## 42.
-## 43.
-## 44.
-## 45.
-## 46.
-## 47.
-## 48.
-## 49.
-## 50.
+
+```xml
+android:gravity="right | center"
+android:layout_gravity="center"
+```
+
+> 그냥 gravity는 부모의 것을 layout_gravity에서 적용하고 자신한테 적용할 것을 말하는 것. 
+
+> '|'를 통해서 속성 2가지를 동시에 적용시켰다.
+
+
+`android:layout_weight="1"`
+
+> weight 속성을 통해서 동일 항렬 컴포넌트끼리의 비율을 정해줄 수 있다. 
+
+
+```xml
+android:layout_width="wrap_content"
+android:layout_height="0dp"
+android:layout_weight="1"
+```
+
+> 높이를 0dp로 했기 때문에, weight의 비율이 높이에 적용된다. 
+
+`android:weightSum="5"``
+
+> 부모 컴포넌트의 비율을 전체 5등분을 했다는 것을 의미 : 최대 비율 (5)까지 자식 컴포넌트 끼리 나눌 수 있는 것. 
+
+
+## 07. Linear layout 설명
+
+리니어레이아웃을 기준으로 9가지로 나누어서 각기 다른색으로 표현
+
+## 08. Linear layout 풀이
+
+
+## 09. Relative layout 개념 (1)
+## 10. Relative layout 개념 (2)
+## 11. Relative layout 과제 설명
+## 12. Relative layout 과제 풀이
+## 13. Padding, Margin
+## 14. Frame Layout
+## 15. Frame Layout 과제 설명
+## 16. Frame Layout 과제 풀이
+## 17. Scrollview
+## 18. Imageview
+## 19. 파이널 과제 설명
+## 20. 파이널 과제 풀이
+## 21. Drawable
