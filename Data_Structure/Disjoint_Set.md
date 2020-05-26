@@ -72,7 +72,65 @@ void union(int a, int b){
 }
 ```
 
-## 💌 참고자료
+## 🤭 참고 문제
+
+백준 온라인 저지
+- [1717 - 집합의 표현](https://www.acmicpc.net/problem/1717)
+
+```java
+public class question1717 {
+
+    static int n,m;
+    static int[] parent;
+    static BufferedWriter bw;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        String[] temp = br.readLine().split(" ");
+        n = Integer.parseInt(temp[0]);
+        m = Integer.parseInt(temp[1]);
+        parent = new int[n+1];
+        for(int i=0;i<=n;i++)parent[i] = i;
+
+        for(int i=0;i<m;i++){
+            temp = br.readLine().split(" ");
+            int command = Integer.parseInt(temp[0]);
+            int x = Integer.parseInt(temp[1]);
+            int y = Integer.parseInt(temp[2]);
+
+            if(command == 0){ // 합집합 연산
+                union(x, y);
+            }else if(command == 1){ // 확인 연산
+                isSameParent(x, y);
+            }
+        }
+        bw.flush();
+    }
+
+    public static void union(int x, int y){
+        x = find(x);
+        y = find(y);
+        if(x != y)parent[y] = x;
+    }
+
+    public static int find(int x){
+        if(x == parent[x])return x;
+        else return parent[x] = find(parent[x]);
+    }
+
+    public static void isSameParent(int x, int y) throws IOException {
+        x = find(x);
+        y = find(y);
+        if(x == y) bw.write("YES\n");
+        else bw.write("NO\n");
+    }
+
+}
+```
+
+
+## 💌 참고 자료
 
 1. [ratsgo's blog](https://ratsgo.github.io/data%20structure&algorithm/2017/11/12/disjointset/)
 2. [위키피디아 - 서로소 집합 자료 구조](https://ko.wikipedia.org/wiki/%EC%84%9C%EB%A1%9C%EC%86%8C_%EC%A7%91%ED%95%A9_%EC%9E%90%EB%A3%8C_%EA%B5%AC%EC%A1%B0)
