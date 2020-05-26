@@ -16,6 +16,9 @@
 ## 🌈 [알고리즘](https://github.com/Rurril/TIL/tree/master/Algorithm)
 
 - [시간복잡도](https://github.com/Rurril/TIL/blob/master/Algorithm/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%EC%9D%98%20%EC%8B%9C%EA%B0%84%20%EB%B3%B5%EC%9E%A1%EB%8F%84%20%EB%B6%84%EC%84%9D.md)
+- 정렬
+  - [위상 정렬](https://github.com/Rurril/TIL/blob/master/Algorithm/TopologicalSort.md)
+      - 구현 파트 추가 예정 
 - [너비 / 깊이 우선 탐색]()
 - [브루트 포스]()
   - 예정
@@ -48,6 +51,7 @@
 - [스텍, 큐, 덱](https://github.com/Rurril/TIL/blob/master/Data_Structure/StackQueueDeque.md)
   - [우선순위 큐](https://github.com/Rurril/TIL/blob/master/Data_Structure/PriorityQueue.md)
 - [트리](https://github.com/Rurril/TIL/blob/master/Data_Structure/Tree.md)
+  - [최소 신장 트리(Minimum Spanning Tree)](https://github.com/Rurril/TIL/blob/master/Data_Structure/MinimumSpanningTree.md) - Prim 알고리즘 추가 필요. 
 - [선형 자료구조](https://github.com/Rurril/TIL/blob/master/Data_Structure/선형자료구조.md)
 - [서로소 집합(Disjoint Set) - 유니온 파인드(Union-Find)](https://github.com/Rurril/TIL/blob/master/Data_Structure/Disjoint_Set.md)
   - 추가 수정 필요
