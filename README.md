@@ -56,6 +56,8 @@
 ### [트리(Tree)](https://github.com/Rurril/TIL/blob/master/Data_Structure/Tree.md)
 > [최소 신장 트리(Minimum Spanning Tree)](https://github.com/Rurril/TIL/blob/master/Data_Structure/MinimumSpanningTree.md) - Prim 알고리즘 추가 필요. 
 
+> [세그먼트 트리(Segment Tree)](https://github.com/Rurril/TIL/blob/master/Data_Structure/SegmentTree.md)
+
 ### [선형 자료구조(Linear Data Structure)](https://github.com/Rurril/TIL/blob/master/Data_Structure/선형자료구조.md)
 
 ### [서로소 집합(Disjoint Set) - 유니온 파인드(Union-Find)](https://github.com/Rurril/TIL/blob/master/Data_Structure/Disjoint_Set.md)
