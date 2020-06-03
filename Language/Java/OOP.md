@@ -92,3 +92,6 @@ static 변수(클래스 변수)
 - `Customer vc = new VIPCustomer()`
 - 선언된 클래스형(상위 클래스형) - 생성된 인스턴스의 클래스형(하위 클래스형)
 
+> 위의 Customer vc에서 vc가 가리키는 것은?
+
+힙 메모리에는 VIPCustomer() 생성자의 호출로 인스턴스들은 모두 생성되었지만, 타입이 Customer이므로 접근할 수 있는 변수는 Customer의 변수와 메서드만 가능하다.
