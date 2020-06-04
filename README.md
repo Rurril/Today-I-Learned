@@ -13,10 +13,8 @@
 **시작 :** 2020.04.19  
 ## 공부한 것을 정리하기 위함. 
 
-TEST
-
 --- 
-## 🌈 [알고리즘(Algorithms)](https://github.com/Rurril/TIL/tree/master/Algorithm)
+## 🌈 알고리즘(Algorithms)
 
 ### [시간복잡도](https://github.com/Rurril/TIL/blob/master/Algorithm/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%EC%9D%98%20%EC%8B%9C%EA%B0%84%20%EB%B3%B5%EC%9E%A1%EB%8F%84%20%EB%B6%84%EC%84%9D.md)
 ### 정렬
@@ -45,12 +43,14 @@ TEST
 > 수정 중
 ### [투 포인터(Two Pointers)](https://github.com/Rurril/TIL/blob/master/Algorithm/TwoPoinrters.md)
 
+### [LCA(Lowest Common Ancestor)](https://github.com/Rurril/TIL/blob/master/Algorithm/LCA.md)
+
 ### [에라토스테네스의 체(Sieve of Eratosthenes)](https://github.com/Rurril/TIL/blob/master/Algorithm/Eratosthenes.md)
 > 예정
 
 ---
 
-## 🖥 [자료구조](https://github.com/Rurril/TIL/tree/master/Data_Structure)
+## 🖥 자료구조
 
 ### [스텍, 큐, 덱(Stack, Queue, Deque)](https://github.com/Rurril/TIL/blob/master/Data_Structure/StackQueueDeque.md)
 > [우선순위 큐(Priority Queue)](https://github.com/Rurril/TIL/blob/master/Data_Structure/PriorityQueue.md)
@@ -97,7 +97,7 @@ TEST
 > [다형성(Polymorphis)](https://github.com/Rurril/TIL/blob/master/Language/Java/Polymorphis.md)
 >> 정리 추가적으로 필요
 
-> [싱글톤 패턴(Singleton Pattern)]((https://github.com/Rurril/TIL/blob/master/Language/Java/SingletonPattern.md))
+> [싱글톤 패턴(Singleton Pattern)](https://github.com/Rurril/TIL/blob/master/Language/Java/SingletonPattern.md)
 >> 정리 추가적으로 필요
 
 ---
