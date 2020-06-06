@@ -319,3 +319,145 @@ public class BookShelf extends Shelf implements Queue{
 > - **결론적으로 독립적으로 프로그래밍하기가 힘들어 진다.**
 
 
+## Object 클래스
+
+모든 클래스의 최상위 클래스
+
+java.lang.Object 클래스
+
+모든 클래스는 Object 클래스에서 상속 받음
+모든 클래스는 Object 클래스에의 메서드를 사용할 수 있음
+모든 클래스는 Object 클래스의 일부 메서드를 재정의 하여 사용할 수 있음. 
+
+### equals() 메서드
+
+두 객체의 동일함을 논리적으로 재정의 할 수 있음
+
+> 물리적 동일함 : 같은 주소를 가지는 객체
+
+> 논리적 동일함 : 같은 학번의 학생, 같은 주문 번호의 주문
+
+물리적으로 다른 메모리에 위치한 객체라도 논리적으로 동일함을 구현하기 위해 사용하는 메서드
+
+```java
+String str1 = new String("ABC");
+String str2 = new String("ABC");
+
+System.out.println(str1 == str2); 
+```
+
+이것은 str1 과 str2가 같은 주소를 나타내는지를 물어보는 방식이다. 당연히 결과는 false가 나온다.
+
+```java
+System.out.println(str1.equals(str2));
+```
+
+위의 출력은 str1과 str2가 논리적으로 동일한지를 물어보는 것. 결과는 true
+> String 클래스에서 equals 메서드를 구현해놓은 것을 사용한다.
+
+
+
+### hashCode() 메서드
+
+hashCode() 메서드의 반환 값 : 인스턴스가 저장된 가상머신의 주소를 10진수로 반환
+
+두 개의 서로 다른 메모리에 위치한 인스턴스가 동일하다는 것은?
+> 논리적으로 동일 : equals() 의 반환 값이 true
+
+> 객체 해시코드란 객체를 실별할 하나의 정수값을 말한다. Object의 hashCode() 메소드는 객체의 메모리 번지를 이용해서 해시코드를 만들어 리턴하기 때문에 객체 마다 다른 값을 가지고 있다.
+
+>> 만약에 hashCode()를 오버라이딩해서 구현하게 된다면, 메모리와 같이 그 객체를 구별할 수 있는 키로 등록을 해야하는 것
+
+
+[hashCode()와 equals()의 차이점과 필요성](https://nesoy.github.io/articles/2018-06/Java-equals-hashcode)
+
+**그럼 hashCode()와 equals()랑은 어떻게 쓰이는건가?**
+
+equals는 두 객체가 논리적으로 같은지 비교하기 위해서 구현한다. 
+
+hashCode() 또한 두 객체가 논리적으로 동일하다면 같은 hashCode를 반환하도록 구현해야하지만, 해쉬코드는 하나의 식별키로 사용되는 것이다.
+
+대표적으로 쓰이는 것은 다음 아래와 같다. 
+
+> 컬렉션 프레임워크에서 HashSet, HashMap, HashTable은 다음과 같은 방법으로 두 객체가 동등한지 비교한다.
+
+우선 hashCode() 메소드를 실행해서 리턴된 해시코드 값이 같은지를 본다. 
+
+해시 코드값이 다르면 다른 객체로 판단하고, 해시 코드값이 같으면 equals()메소드로 다시 비교한다. 이두개가 모두 맞아야 동등 객체로 판단한다.
+
+즉, hashCode()를 정의해서 그 값이 맞는지 먼저 확인하고, 아니라면 바로 다른 객체로 인식하는 true or false 문제에서 빠르게 결정을 한 단계 내리는 점이다.
+
+hashCode도 같다면, 그 다음에 equals 메서드의 구현을 통해서 같은 객체인지를 더 자세히 확인하는 것. 
+
+### clone() 메서드
+
+객체의 복사본을 만듦
+
+기본 틀(prototype)으로 부터 같은 속성 값을 가진 객체의 복사본을 생성할 수 있음
+
+**객체지향 프로그래밍의 정보은닉에 위배되는 가능성이 있으므로 복제할 객체는 `clonable` 인터페이스를 명시해야 함.**
+
+> clonable 인터페이스 : 마크 인터페이스로, 사용하기 위해서 명시하는 용도로 사용.
+
+native 코드를 사용해서, 객체의 주소에 있는 값을 그대로 복사한다.
+
+
+
+## Class 클래스
+
+자바의 모든 클래스와 인터페이스는 컴파일 후 class 파일로 생성됨
+
+class 파일에는 객체의 정보(멤버변수, 메서드, 생성자 등)가 포함되어 있음
+
+class 클래스는 컴파일된 class 파일에서 객체의 정보를 가져올 수 있음
+
+### Class 클래스 가져오기
+
+1. String s = new String();
+    - Class c = s.getClass(); -> Object의 메서드
+2. Class c = String.class;
+
+3. Class c = Class.forName("java.lang.String"); -> 동적 로딩
+    - 즉, 이 라인이 실행이 될 때, String클래스를 가져오는 것 (제일 많이 사용된다고 함)
+    - 컴파일 타임이 아니라, 런타임에 내가 원하는 라이브러리를 매칭시킬 수 있다.
+    - 단점 : 오타나 오류 나는 경우 런타임에 죽을 수 있다. 
+
+
+### reflection 프로그래밍
+
+Class 클래스로부터 객체의 정보를 가져와 프로그램이 하는 방식
+
+로컬에 객체가 없고 자료형을 알 수 없는 경우 유용한 프로그래밍
+
+java.lang.reflect 패키지에 있는 클래스 활용
+
+```java
+Class c = Class.forName("java.lang.String");
+
+Constructor[] cons = c.getConstructors();
+for(int Constructor con : cons){
+    System.out.println(con);
+}
+
+Method[] methods = c.getMethods();
+for(Method method : methods){
+    System.out.println(method);
+}
+```
+
+위와 같은 식으로 어떤 생성자 있고, 메소드들이 있는지 확인할 때 유용한 듯하다.
+
+(솔직히 최고는, 그냥 그 라이브러리를 다 뜯어보는 게 최고라고 생각함)
+
+### forName() 메서드와 동적 로딩
+
+Class 클래스의 static 메서드
+
+동적 로딩이란 ? 
+
+> 컴파일 시에 데이터 타입이 모두 biding 되어 자료형이 로딩되는 것(static loading)이 아니라 실행 중에 데이터 타입을 알고 binding 되는 방식
+
+실행 시에 로딩되므로 경우에 따라 다른 클래스가 사용될 수 있어 유용함
+
+컴파일 타임에 체크 할 수 없으므로 해당 문자열에 대한 클래스가 없는 경우 예외(ClassNotFoundException)이 발생할 수 있음. 
+

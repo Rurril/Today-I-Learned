@@ -19,17 +19,17 @@
 ### [시간복잡도](https://github.com/Rurril/TIL/blob/master/Algorithm/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%EC%9D%98%20%EC%8B%9C%EA%B0%84%20%EB%B3%B5%EC%9E%A1%EB%8F%84%20%EB%B6%84%EC%84%9D.md)
 ### 정렬
 > [위상 정렬](https://github.com/Rurril/TIL/blob/master/Algorithm/TopologicalSort.md) - 구현 파트 추가 예정 
-### [너비 / 깊이 우선 탐색(BFS / DFS)]()
-### [완전 탐색(Brute Force)]()
+### 너비 / 깊이 우선 탐색(BFS / DFS)
+### 완전 탐색(Brute Force)
 > 예정
-### [동적 계획법(Dynamic Programming)]()
+### 동적 계획법(Dynamic Programming)
 > 예정
 ### [이진 탐색(Binary Search)](https://github.com/Rurril/TIL/blob/master/Algorithm/%EC%9D%B4%EC%A7%84%ED%83%90%EC%83%89.md)
 ### [백트래킹(Backtracking)](https://github.com/Rurril/TIL/blob/master/Algorithm/Backtracking.md)
 ### [탐욕 알고리즘(Grid Algorithm)](https://github.com/Rurril/TIL/blob/master/Algorithm/%EA%B7%B8%EB%A6%AC%EB%93%9C%20%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98.md)
-### [문자열 처리]()
+### 문자열 처리
 > KMP, LCP - 예정
-### [수학]()
+### 수학
 > 유클리드 호제법 - 예정
 ### [분할 정복(Divide and Conquer)](https://github.com/Rurril/TIL/blob/master/Algorithm/%EB%B6%84%ED%95%A0%EC%A0%95%EB%B3%B5.md)
 ### [좌표압축 알고리즘](https://github.com/Rurril/TIL/blob/master/Algorithm/%EC%A2%8C%ED%91%9C%EC%95%95%EC%B6%95%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98.md)
@@ -91,6 +91,7 @@
 > **Boost Course**
 >> 현재 공부중
 
+
 > [객체지향 프로그래밍 - OOP(Object Oriendted Programming)](https://github.com/Rurril/TIL/blob/master/Language/Java/OOP.md)
 >> 정리 추가적으로 필요
 
@@ -100,6 +101,7 @@
 > [싱글톤 패턴(Singleton Pattern)](https://github.com/Rurril/TIL/blob/master/Language/Java/SingletonPattern.md)
 >> 정리 추가적으로 필요
 
+> Call by value VS Call by reference (TODO)
 ---
 
 ## ⚙️ CS(Computer Science)
