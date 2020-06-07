@@ -461,3 +461,304 @@ Class 클래스의 static 메서드
 
 컴파일 타임에 체크 할 수 없으므로 해당 문자열에 대한 클래스가 없는 경우 예외(ClassNotFoundException)이 발생할 수 있음. 
 
+
+
+## String, Wrapper 클래스
+
+### String 클래스 선언하기
+
+```java
+String str1 = new String("abc"); // 인스턴스로 생성됨
+String str2 = "abc" // 상수풀에 있는 문자열을 가리킴
+String str3 = "abc" // 상수풀에 있는 문자열을 가리킴
+```
+
+2,3 번째는 상수풀에서 가져오므로, equals로 비교를 했을 때, 메모리가 같아서 true가 반환 될 수 있다.
+
+1번째는 직접 힙에 인스턴스를 생성해서 주소값이 다를 수 있지만, str2와 str3는 같은 상수풀의 메모리를 가리킬 수 있다.
+
+### String은 immutable
+
+한 번 선언되거나 생성된 문자열을 변경할 수 없음
+
+String 클래스의 concat() 메서드 혹은 "+"을 이용하여 String을 연결하는 경우 문자열은 새로 생성이 되는 것
+
+- 계속해서 새로운 메모리에 객체가 만들어지므로, 메모리 낭비가 이루어진다. 
+
+### StringBuilder와 StringBuffer
+
+그러므로 동적으로 사용하기 위해서 위의 클래스들을 사용한다
+
+가변적인 char[] 배열을 멤버변수로 가지고 있는 클래스
+
+문자열을 변경하거나 연결하는 경우 사용하면 편리한 클래스
+
+StringBuffer는 멀티 쓰레드프로그래밍에서 동기화(Synchronization)이 보장됨
+> 단일 쓰레드 프로그래밍에서는 StringBuilder를 사용하는것이 더 좋음
+
+toString() 메서드로 String 반환
+
+### Wrapper 클래스
+
+기본 자료형에 대한 클래스
+
+|기본형|Wrapper 클래스|
+|------|---|
+|boolean|Boolean|
+|byte|Byte|
+|char|Character|
+|short|Short|
+|int|Integer|
+|long|Long|
+|float|Float|
+|double|Double|
+
+기본형을 클래스라는 이름으로 감싼 것
+
+## 제네릭 프로그래밍
+
+### 제네릭 프로그래밍이란
+
+변수의 선언이나 메서드의 매개변수를 하나의 참조 자료형이 아닌 여러 자료형을 변환 될 수 있도록 프로그래밍 하나 방식
+
+실제 사용되는 참조 자료형으로의 변환은 **컴파일러가 검증하므로 안정적인 프로그래밍 방식**
+
+### 자료형 매개 변수 T
+
+여러 참조 자료형으로 대체 될 수 있는 부분을 하나의 문자로 표현
+
+type의 의미로 T 사용
+
+```java
+public class GenericPrinter<T>{
+    private T material;
+
+    public void setMaterial(T material){
+        this.material = material;
+    }
+
+    public T getMaterial(){
+        return material;
+    }
+}
+```
+
+### <T extends 클래스>
+
+T 대신에 사용될 자료형을 제한하기 위해 사용
+
+예를 들어 Car라는 클래스를 상속하는 SuperCar와 NormalCar 클래스가 있다고 할때
+
+class RunningCar<T extends Car> 라고 선언하면 여기서 T에 들어갈 수 있는 것은 Car 클래스를 상속하는 SuperCar나 NormalCar로 제한된다는 것이다.
+
+### 자료형 매개 변수가 두 개 이상일 때
+
+```java
+public class Point<T, V>{
+    T x;
+    V y;
+
+    Point(T x, V y){
+        this.x = x;
+        this.y = y;
+    }
+
+    public T getX(){
+        return x;
+    }
+    public V getY(){
+        return y; 
+    }
+}
+```
+
+getX와 getY 같은 것을 제너릭 메서드라고 한다.
+
+### 제너릭 메서드
+
+메서드 내에서의 자료형 매개 변수는 메서드 내에서만 유효 함( 지역 변수와 같은 개념 )
+
+```java
+class Shape<T>{
+    public static <T, V> double makeRectangle(Point<T,V> p1, Point<T,V> p2){
+        ......
+    }
+}
+```
+
+Shape의 T와 makeRectangle의 T는 전혀 다른 의미 -- 지역 변수와 같은 개념이므로
+
+## 컬렉션 프레임워크
+
+### 컬렉션 프레임워크란
+
+프로그램 구현에 필요한 자료구조와 알고리즘을 구현해 놓은 라이브러리
+
+java.util 패키지에 구현되어 있음
+
+개발에 소요되는 시간을 절약하고 최적화된 라이브러리를 사용할 수 있음
+
+Collection 인터페이스와 Map 인터페이스로 구성됨
+
+### Collection 인터페이스
+
+하나의 객체의 관리를 위해 선언된 인터페이스로 필요한 기본 메서드가 선언되어 있음
+
+하위에 List, Set 인터페이스가 있음
+
+List 인터페이스
+> 순서가 있는 자료 관리, 중복 허용.
+
+> 이 인터페이스를 구현한 클래스는 ArrayList, Vectior, LinkedList, Stack, Queue 등이 있음
+
+Set 인터페이스
+> 순서가 정해져 있지 않음, 중복을 허용하지 않음. 
+
+> 이 인터페이스를 구현한 클래스는 HashSet, TreeSet 등이 있음
+
+
+### Map 인터페이스
+
+쌍으로 이루어진 객체를 관리하는 데 필요한 여러 메서드가 선언되어 있음
+
+Map을 사용하는 객체는 Key-Value 쌍으로 되어 있고 Key는 중복될 수 없음
+
+
+
+## List 인터페이스
+ 
+
+### ArrayList 와 Vector
+
+객체 배열 클래스
+
+Vector는 자바2부터 제공된 클래스
+
+일반적으로 ArrayList를 더 많이 사용
+
+Vector는 멀티 쓰레드 프로그래밍에서 동기화를 지원
+
+동기화(Synchronization) : 두 개의 쓰레드가 동시에 하나의 리소스에 접근할 떄 순서를 맞추어서 데이터의 오류를 방지하기 위함
+
+Capacity와 Size는 다른 의미이다.
+
+### ArrayList와 LinkedList
+
+둘 다 자료의 순차적 구조를 구현한 클래스
+
+ArrayList는 배열을 구현한 클래스로 논리적 순서와 물리적 순서가 동일 함
+
+LinkedList는 논리적으로 순차적인 구조지만, 물리적으로는 순차적이지 않을 수 있음
+
+LinkedList
+> 자료의 추가와 삭제가 빠름
+
+
+## Set 인터페이스
+
+### Iterator로 순회하기
+
+Collection의 개체를 순회하는 인터페이스
+
+iterator() 메서드 호출
+
+`Iterator ir = memberArrayList.iterator();`
+
+Iterator에 선언된 메서드
+
+> boolean hasNext() : 이후에 요소가 더 있는지를 체크하는 메서드
+
+> E next() : 다음에 있는 요소를 반환한다.
+
+```java
+while(ir.hasNext()){
+    Member next = ir.next();
+}
+```
+
+위와 같은 방식으로 Colection 개체를 순회한다.
+
+
+> set을 사용하기 위해서는 제너릭 클래스에 hashCode와 equals를 오버라이딩 해주어야 한다.
+
+> 아니면, 각 객체가 같은지 다른지, 인식하지 못할 수가 있다.
+
+
+### Set 인터페이스
+
+중복을 허용하지 않음
+
+List는 순서기반의 인터페이스지만, Set은 순서가 없음
+
+get(i) 메서드가 제공되지 않기 때문에 - Iterator로 순회한다.
+- 저장된 순서와 출력순서는 다를 수 있음
+
+아이디, 주민번호, 사번 등 유일한 값이나 객체를 관리할 때 사용
+
+-> 구현 : HashSet, TreeSet 클래스
+
+### TreeSet 클래스
+
+객체의 정렬에 사용되는 클래스
+
+중복을 허용하지 않으면서 오름차순이나 내림차순으로 객체를 정렬함
+
+내부적으로 이진 검색 트리(Binary Search Tree)로 구현되어 있다.
+
+- BST는 자료가 저장될 때 비교하여 저장될 위치를 정한다.
+- 객체 비교를 위해서 Comparable이나 Comparator 인터페이스를 구현해야 함.
+
+
+### Comparable 인터페이스와 Comparator 인터페이스
+
+정렬 대상이 되는 클래스가 구현해야 하는 인터페이스
+
+Comparable은 compareTo()메서드를 구현
+- 매개 변수와 객체 자신(this)를 비교
+
+Comparator는 compare()메서드를 구현
+- 두 개의 매개 변수를 비교
+- TreeSet 생성자에 Comparator가 구현된 객체를 매개변수로 전달
+- `TreeSet<Member> treeSet = new TreeSet<Member>(new Member());`
+
+> 일반적으로 Comparable을 더 많이 사용
+
+> 이미 Comparable이 구현된 경우 Comparator를 이용하여 다른 정렬 방식을 정의할 수 있음
+
+
+## Map 인터페이스
+
+key-value pair의 객체를 관리하는데 필요한 메서드가 정의 됨
+
+key는 중복될 수 없음
+
+검색을 위한 자료 구조
+
+key를 이용하여 값을 저장하거나 검색, 삭제 할 때 사용하면 편리함
+- 내부적으로 hash 방식으로 구현된다.
+
+`index = hash(key) // index는 저장 위치`
+
+key가 되는 객체는 객체의 유일성함의 여부를 알기 위해 equals()와 hashCode() 메서드를 재정의 함 - set과 비슷
+
+### HashMap 클래스
+
+Map 인터페이스를 구현한 클래스 중 가장 일반적으로 사용하는 클래스
+
+HashTable 클래스는 자바 2부터 제공된 클래스로 Vector처럼 동기화를 제공 함
+
+pair 자료를 쉽고 빠르게 관리할 수 있음
+
+### TreeMap 클래스
+
+key 객체를 정렬하여 key-value를 pair로 관리하는 클래스
+
+key에 사용되는 클래스에 Comparable, Comparator 인터페이스를 구현
+
+java에 많은 클래스들은 이미 Comparable이 구현되어 있다. --> key로 사용하기 위함
+
+
+
+
+
+
