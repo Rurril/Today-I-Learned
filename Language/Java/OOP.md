@@ -758,7 +758,265 @@ key에 사용되는 클래스에 Comparable, Comparator 인터페이스를 구�
 java에 많은 클래스들은 이미 Comparable이 구현되어 있다. --> key로 사용하기 위함
 
 
+## 내부 클래스
+
+클래스 내부에 구현한 클래스(중첩된 클래스)
+
+클래스 내부에서 사용하기 위해 선언하고 구현하는 클래스
+
+주로 외부 클래스 생성자에서 내부 클래스 생성
+
+|종류|구현 위치|사용할 수 있는 외부 클래스 변수|생성 방법|
+|------|:---|:------|:-------|
+|인스턴스 내부 클래스|외부 클래스 멤버 변수와 동일|외부 인스턴스 변수, 외부 전역 변수|외부 클래스를 먼저 만든 후 내부 클래스 생성|
+|정적 내부 클래스|외부 클래스 멤버 변수와 동일|외부 전역 변수|외부 클래스와 무관하게 생성|
+|지역 내부 클래스|메서드 내부에 구현|외부 인스턴스 변수, 외부 전역 변수|메서드를 호출할 때 생성|
+|익명 내부 클래스|메서드 내부에 구현, 변수에 대입해서 직접 구현|외부 인스턴스 변수, 외부 전역 변수|메서드를 호출할 때 생성되거나, 인터페이스 타입변수에 대입할 때 new 예약어를 사용하여 생성|
+
+이 중에서 익명 내부클래스를 많이 사용한다고 한다.
 
 
 
+```java
+class outer{
+
+    int outNum = 100;
+    static int sNum = 200;
+
+    Runnable getRunnable(int i){
+
+        // int num = 100; --> 안써도 final : 상수가 되어버린다. 
+
+        class MyRunnable implements Runnable{
+
+            @Override
+            public void run(){
+                // num += 10;  -- 그래서 run에서 num에 접근할 수 없다. 
+                System.out.println(num); //--> 참조는 가능하다.
+                System.out.println(outNum);
+                System.out.println(Outer.sNum);
+            }
+        }
+    };
+
+    return new MyRunnable();
+}
+```
+
+getRunnable() 메서드가 끝나고 지역변수인 num은 사라지므로, 접근할 수 없다.
+
+```java
+public class Main{
+
+    public static void(String[] args){
+        Outer outer = new Outer();
+        Runnable runnable = outer.getRunnable(50);
+
+        runnable.run(); // 이렇게 사용은 가능
+    }
+}
+```
+
+지금까지가 익명 내부 클래스였다.
+
+## 람다식
+
+자바에서 함수형 프로그래밍(functional programming)을 구현하는 방식
+
+클래스를 생성하지 않고 함수의 호출만으로 기능을 수행
+
+함수형 인터페이스를 선언함 - 자바 8부터 지원되는 기능
+
+### 람다식 문법
+
+매개 변수 하나인 경우 괄호 생략가능(두 개인 경우는 괄호를 생략할 수 없음)
+
+> str ->{System.out.println(str);}
+
+중괄호 안의 구현부가 한 문장인 경우 중괄호 생략
+> str -> System.out.println(str);
+
+중괄호 안의 구현부가 한 문장이라도 return문은 중괄호를 생략할 수 없음
+> str -> return str.length(); // 오류
+
+중괄호 안의 구현부가 반환문 하나라면 return과 중괄호를 모두 생략할 수 있음
+> (x,y) -> x+y // 두 값을 더하여 반환
+
+> str -> str.length() // 문자열 길이를 반환
+
+```java
+
+public class Main  {
+    public static void main(String[] args) throws IOException {
+        MyMaxNumber max = (x, y)->(x >= y)? x: y;
+        System.out.println(max.getMaxNumber(3, 4));
+    }
+}
+
+@FunctionalInterface // 람다식을 위한 인터페이스다라는 것을 위미
+interface MyMaxNumber{
+    int getMaxNumber(int x, int y);
+}
+```
+
+람다식으로 인터페이스를 사용한 것
+
+그리고 아래는 기존의 방식으로 사용한 것
+```java
+public class Main implements MyMaxNumber {
+    public static void main(String[] args) throws IOException {
+        
+        System.out.println(getMaxNumber(3, 4));
+    }
+
+    @Override
+    int getMaxNumber(int x, int y){
+        return x >= y ? x: y;
+    }
+}
+
+@FunctionalInterface // 람다식을 위한 인터페이스다라는 것을 위미
+interface MyMaxNumber{
+    int getMaxNumber(int x, int y);
+}
+```
+
+
+람다식의 해석 --> 결국 자바는 객체지향이기 때문
+
+익명 내부클래스 처럼
+
+```java
+StringConcat concat = (s, v) -> System.out.println(s + "," + v);
+concat.makeString("hello", "world");
+//--------------------------------------//
+StringConcat concat2 = new StringConcat(){
+
+    @Override
+    public void makeString(String s1, String s2){
+        System.out.println(s1 + "," + s2);
+    }
+}
+concat2.makeString("hello", "world");
+```
+
+위와 아래의 코드는 동일한 기능을 수행한다. 
+
+### 함수를 변수처럼 사용하는 람다식
+
+프로그램에서 변수는...
+- 자료형에 기반하여 선언하고 : int a
+- 매개변수로 전달하고 : int add(int x, int y);
+- 메서드의 반환 값으로 사용 : return num;
+
+> 람다식은 프로그램내에서 변수처럼 사용할 수 있음
+
+```java
+interface PrintString{
+    void showString(String str);
+}
+
+public class Main{
+
+    public static void main(String[] args){
+        PrintString lambdaStr = s->System.out.println(s);
+        lambdaStr.showString("Test");
+
+        showMyString(lambdaStr);
+
+        PrintString test = returnString();
+        test.showString("Test3");
+    }
+
+    public static void showMyString(PrintString p){
+        p.showString("Test2");
+    }
+
+    public static PrintString returnString(){
+        return s->System.out.println(s + "!!!");
+    }
+}
+```
+
+위와 같은 식으로 람다식을 하나의 매개변수, 변수처럼 사용할 수가 있다. 
+
+`(선언, 매개변수 전달, 메서드의 반환 값으로 사용)`
+
+## 스트림
+
+스트림(Stream) - i/o에서 나오는 스트림과 다른 것!
+
+자료의 대상과 관계없이 동일한 연산을 수행할 수 있는 기능(자료의 추상화)
+
+배열, 컬렉션에 동일한 연산이 수행되어 일관성 있는 처리 가능
+
+한번 생성하고 사용한 스트림은 재사용할 수 없음
+
+스트림 연산은 기존 자료를 변경하지 않음
+
+중간 연산과 최종 연산으로 구분 됨
+
+**최종 연산이 수행되어야 모든 연산이 적용되는 지연 연산**
+
+### 스트림 연산 - 중간 연산
+
+중간 연산 - filter(), map()
+
+조건에 맞는 요소를 추출(filter()) 하거나 요소를 변환함(map())
+
+### 스트림 연산 - 최종 연산
+
+스트림의 자료를 소모 하면서 연산을 수행
+
+최종 연산 후에 스트림은 더 이상 다른 연산을 적용할 수 없음
+
+- forEach() : 요소를 하나씩 꺼내 옴
+- count() : 요소의 개수
+- sum() : 요소의 합 
+
+이 외에도 여러가지 최종 연산이 있다.
+
+
+```java
+int[] arr = {1,2,3,4,5};
+int sum = Arrays.stream(arr).sum();
+int count = (int)Arrays.stream(arr).count();
+
+System.out.println(sum  + " " + count);
+
+List<String> list = new ArrayList<>();
+list.add("Tomas"); list.add("Edward"); list.add("Jack");
+
+Stream<String> stream = list.stream();
+stream.sorted().forEach(s->System.out.print(s + " "));
+System.out.println();
+list.stream().map(s -> s.length()).forEach(n -> System.out.println(n));
+```
+
+연산을 위해서 사용했다.
+
+중간과 최종 연산을 람다식을 이용해서 구현했다. 
+
+### reduce() 연산
+
+정의된 연산이 아닌 프로그래머가 직접 지정하는 연산을 적용
+
+최종 연산으로 스트림의 요소를 소모하며 연산 수행
+
+배열의 모든 요소의 합을 구하는 reduce() 연산
+
+`Arrays.stream(arr).reduce(0, (a, b) -> a + b));`
+> 0 : 초기값, (a, b) : 전달되는 요소 , a + b : 각 요소가 수행해야 할 기능
+
+
+스트림에 대한 내용은 크게 세 가지로 나눌 수 있습니다.
+
+1. 생성하기 : 스트림 인스턴스 생성.
+2. 가공하기 : 필터링(filtering) 및 맵핑(mapping) 등 원하는 결과를 만들어가는 중간 작업(intermediate operations).
+3. 결과 만들기 : 최종적으로 결과를 만들어내는 작업(terminal operations).
+
+> 전체 -> 맵핑 -> 필터링 1 -> 필터링 2 -> 결과 만들기 -> 결과물
+
+
+스트림에 대한 것은 제대로 공부해서 사용법을 따로 익히도록 하자.
 
