@@ -1164,4 +1164,99 @@ OutputStream : 바이트 단위 출력 스트림 최상위 클래스
 
 출력 스트림은 파일이 없는 경우 파일 생성하여 출력
 
-ㅈㄴㄴ
+## 문자 단위 입출력 스트림
+
+
+Reader : 문자 단위로 읽는 최상위 스트림
+Writer : 문자 단위로 쓰는 최상위 스트림
+
+추상 메서드를 포함한 추상 클래스로 하위 클래스가 상속받아 구현
+
+바이트 단위로 읽는 것과 다르게 말 그대로 문자단위로 읽게 됨. 
+
+## 보조 스트림
+
+읽고 쓰는 기능은 없지만, 기능을 추가시켜주는 스트림
+
+FilterInputSTream과  FilterOutputStream이 보조스트림의 상위 클래스
+
+생성자의 매개 변수로 또 다른 스트림을 가짐
+
+데코레이터 패턴(Decorator pattern)
+> 기반 스트림 + 보조 스트림 + 보조 스트림 
+
+> 바이트 단위 파일 입력 스트림 + 문자로 변환 기능 추가 + 버퍼링 기능 추가 
+
+### 여러가지 보조 스트림 사용하기
+
+Buffered  스트림 : 내부에 8192 바이트 배열을 가지고 있음 - 읽거나 쓸 때 속도가 빠름
+
+DataInputSteram / DataOutputStream : 자료가 저장된 상태 그대로 자료형을 유지하며 읽거나 쓰는 기능을 제공하는 스트림
+
+
+## 직렬화(Serialization)
+
+인스턴스의 상태를 그대로 저장하거나 네트워크로 전송하고 이를 다시 복원(Desrialization)하는 방식
+
+ObjectInputStreasm과 ObjectOutputStream을 사용
+
+
+### Seiralizable 인터페이스
+
+직렬화는 인스턴스의 내용이 외부(파일, 네트웤)로 유출되는 것이므로 프로그래머가 객체의 직렬화 가능 여부를 명시함
+
+> 구현 코드가 없는 Mark 인터페이스
+
+
+```java
+Class Person implements Serializable{
+    String name;
+    transient String job; // 직렬화 하지 마라는 키워드
+
+    public Person(String name, String job){
+        this.name = name;
+        this.job = job;
+    }
+
+    public String toString(){
+        return name + "," + job;
+    }
+}
+
+public class Main{
+    public static void main(String[] args){
+
+        Person one = new Person("Avatar", "Student");
+        Person two = new Person("Navi", "Professor");
+
+        try(FileOutputStream fos = new FileOutputStream("serial.dat");
+            ObjectOutputStream oos = new ObjectOutputStream(fos)){
+
+            oos.writeObject(one);
+            oos.writeObject(two);
+        }catch(IOException e){}
+
+        try(FileInputStream fis = new FileInputStream("serial.dat");
+            ObjectInputStream ois = new ObjectInputStream(fis)){
+
+            Person p1 = (Person)ois.readObject();
+            Person p2 = (Person)ois.readObject();
+
+            System.out.println(p1);
+            System.out.println(p2);
+        }catch(IOException e){}
+
+    }
+}
+
+```
+
+transient 키워드를 통해서 name은 직렬화되어 출력될 수 있지만, job을 출력하려고하면 null값이 나오게 된다.
+
+
+Externalizable 인터페이스 
+
+--> Serializable 인터페이스와는 다르게 구현할 메서드가 있다. 
+
+> 직접 오브젝트를 Input하고 Output하는 메서드를 구현해야한다.
+
