@@ -1260,3 +1260,451 @@ Externalizable 인터페이스
 
 > 직접 오브젝트를 Input하고 Output하는 메서드를 구현해야한다.
 
+## 그 외 입출력 클래스와 데코레이터 패턴
+
+### 그 외 입출력 클래스
+
+File 클래스
+- 파일 개념을 추상화한 클래스
+- 입출력 기능은 없고 파일의 속성, 경로, 이름 등을 알 수 있음
+
+RandomAccessFile 클래스
+- 입출력 클래스 중 유일하게 파일 입출력을 동시에 할 수 있는 클래스
+- 파일 포인터가 있어서 읽고 쓰는 위치의 이동이 가능함
+- 다양한 자료형에 대한 메서드가 제공됨
+
+```java
+RandomAccessFile rf = new RandomAccessFile("random.txt", "rw");
+rf.writeInt(100);
+System.out.println(rf.getFilePointer());
+rf.writeDouble(3.14);
+rf.writeUTF("안녕하세요");
+
+rf.seek(0); // 포인터를 처음, 0의 위치로 보내는 것
+int i = rf.readInt();
+double d = rf.readDouble();
+String str = rf.readUTF();
+```
+
+### 데코레이터 패턴(Decorator Pattern)
+
+자바의 입출력 스트림은 데코레이터 패턴을 사용
+
+실제 입출력 기능을 가진 객체(컴포넌트)와 그 외 다양한 기능을 제공하는 데코레이터(보조스트림)을 사용하여 다양한 입출력 기능을 구현
+
+상속보다 유연한 확장성을 가짐
+
+지속적인 서비스의 증가와 제거가 용이함
+
+
+---> 데코레이터 패턴을 활용하여 커피를 만들어 봅시다
+
+- 아메리카노
+- 라떼 = 아메리카노 + 우유
+- 모카커피 = 아메리카노 + 우유 + 모카시럽
+- Whipping Cream 모카 커피 = 아메리카노 + 우유 + 모카시럽 + whipping Cream
+
+```java
+public abstract class Coffee{
+    public abstract void brewing();
+}
+
+public class KenyaAmericano extends Coffee{
+
+    @Override
+    public void brewing(){
+        System.out.println("KenyaAmericano");
+    }
+}
+
+public abstract class Decorator extends Coffee{
+    Coffee coffee;
+    public Decorator(Coffee coffee){
+        this.coffee = coffee;
+    }
+    @Override
+    public void brewing(){
+        coffee.brewing();
+    }
+}
+
+public class Latte extends Decorator{
+    public Latte(Coffee coffee){
+        super(coffee);
+    }
+
+    @Override
+    public void brewing(){
+        super.brewing();
+        System.out.println("Adding Milk ");
+    }
+}
+
+```
+
+**Coffee**
+- Decorater
+    - Latte
+- KenyaAmericano
+
+```java
+Coffee americano = new KenyaAmericano();
+americano.brewing(); // --> KenyaAmericano
+
+Coffe kenyaLatte = new Latte(new KenyaAmericano());
+kenyaLatte.brewing(); // --> KenyaAmericano  Adding Milk
+
+// 위에는 안썼지만, Mocha를 하자면?
+Coffee kenyaMocha = new Mocha(new Latte(new KenyaAmericano()));
+kenyaLatte.brewing(); // --> KenyaAmericano  Adding Milk Mocha Syrup
+```
+
+
+## Thread 구현하기
+
+
+### Thread 란?
+
+Process 
+- 실행중인 프로그램
+- OS로부터 메모리를 할당 받음
+
+Thread
+- 실제 프로그램이 수행되는 작업의 최소 단위
+- 하나의 프로세스는 하나 이상의 Thread를 가지게 됨
+
+### Thread 구현하기
+
+> 자바 Thread 클래스로부터 상속하기
+
+> Runnable 인터페이스 구현
+
+- 자바는 다중 상속이 허용되지 않으므로 이미 다른 클래스를 상속한 경우 thread를 만들려면 Runnable interface를 implements 하도록 한다.
+
+스레드를 생성하면, 자바 프로그램에서 메인 스레드와 생성된 스레드가 동시에 작동된다.
+
+```java
+MyThread th1 = new MyThread();
+MyThread th2 = new MyThread();
+
+th1.start();
+th2.start();
+
+//------- 위에는 Thread 클래스를 상속받은 것
+//------- 아래는 Runnable 인터페이스를 구현한 것
+
+MyThread runner1 = new MyThread();
+MyThread runner2 = new MyThread();
+Thread th1 = new Thread(runner1);
+Thread th2 = new Thread(runner2);
+
+th1.start();
+th2.start();
+```
+
+
+### Multi-thread 프로그래밍
+
+동시에 여러 개의 Thread가 수행되는 프로그래밍
+
+Thread는 각각의 작업공간(context)를 가짐
+
+공유 자원이 있는 경우 race condition이 발생
+
+critcal section에 대한 동기화(synchronoization)의 구현이 필요
+
+> 두 개의 Thread가 동시에 접속하려고 하면, 논리적인 오류가 발생할 수 있다.
+
+> 이러한 영역에 대해서 순서를 정해서 지키게 하는 것이 동기화(두 개 이상의 스레드가 동시에 접속 불가능)
+
+## Thread의 여러가지 메서드 활용
+
+### Thread status
+
+![](https://github.com/Rurril/TIL/blob/master/Language/Java/thread_status.png?raw=trueh)
+
+
+### Thread 우선순위
+
+> Thread.MIN_PRIORITY(=1) ~ Thread.MAX_PRIOIRTY(=10)
+
+> 디폴트 우선 순위 : Thread.NORM_PRIOIRTY(=5)
+
+> setPriority(int new Priority)
+
+> int getPrioirty()
+
+우선 순위가 높은 thread는 CPU를 배분 받을 확률이 높음
+
+```java
+public class JoinTest extends Thread{
+    int start, end, total;
+
+    public JoinTest(int start, int end){
+        this.start = start;
+        this.end = end;
+    }
+
+    public void run(){
+        int i;
+        for(i = start; i <=end; i++){
+            total += i;
+        }
+    }
+
+    public static void main(String[] args){
+
+        JoinTest jt1 = new JoinTest(1, 50);
+        JoinTest jt2 = new JoinTest(51, 100);
+
+        /*
+        jt1.start();
+        jt2.start();
+        int total = jt1.total + jt2.total;
+        System.out.println(jt1.total);
+        System.out.println(jt2.total);
+        System.out.println(total);
+        */
+        // 위의 3개의 결과가 할때마다 다르겠지만, 원하는 값 1~100까지 더한 5050이 나오지 않을 확률이 높다.
+
+        jt1.start();
+        jt2.start();
+        try{
+            jt1.join();
+            jt2.join();
+        }catch(InterruptedException e){}
+
+        int total = jt1.total + jt2.total;
+        System.out.println(jt1.total);
+        System.out.println(jt2.total);
+        System.out.println(total);
+
+        // 각각 끝날때까지 기다려줘서, 원하는 값 5050이 잘 나오는 것을 알 수 있다.
+        // jt1 : 1275
+        // jt2 : 3775
+        // total = 5050
+    }
+}
+```
+
+### interrupt() 메서드
+
+다른 thread에 예외를 발생시키는 interrupt를 보냄
+
+thread가 join(), sleep(), wait() 메서드에 의해 블럭킹 되었다면 interrupt에 의해 다시 runnable 상태가 될 수 있음
+
+### Thread 종료하기
+
+데몬 등 무한 반복하는 thread가 종료될 수 있도록 run() 메서드 내의 while문을 활용
+
+> Thread.stop()은 사용하지 않음
+
+```java
+public class TerminateThread extends Thread{
+
+    private boolean flag = false;
+    int i;
+
+    public TerminateThread(String name){
+        super(name);
+    }
+
+    public void run(){
+        while(!flag){
+
+            try{
+                sleep(1000);
+            }catch(InterruptedException e){
+                e.printStackTrace();
+            }
+        }
+        System.out.println(getName() + "End");
+    }
+
+    public void setFlag(boolean flag){
+        this.flag = flag;
+    }
+
+    public static void main(String[] args) throws IOExecption{
+        TerminateThread threadA = new TerminateThread("A");
+        TerminateThread threadB = new TerminateThread("B");
+
+        threadA.start();
+        threadB.start();
+
+        int in;
+        while(ture){
+            in = System.in.read();
+            if( in == 'A')threadA.setFlag(true);
+            else if( in == 'B')threadB.setFlag(true);
+            else if( in == 'M'){
+                threadA.setFlag(true);
+                threadB.setFlag(true);
+                break;
+            }else{
+                System.out.println("Try again");
+            }
+        }
+
+        System.out.println("MAIN END");
+    }
+}
+```
+
+입력하는 값에 따라서 쓰레드를 멈추는 기능을 추가했다.
+
+
+## Multi-thread 프로그래밍
+
+### 임계 영역(critical section)
+
+두 개 이상의 thread가 동시에 접근하게 되는 리소스
+
+critical section에 동시에 thread가 접근하게 되면 실행 결과를 보장할 수 없음
+
+thread간의 순서를 맞추는 동기화(synchronization)이 필요
+
+### 동기화(Synchronization)
+
+임계 영역에 여러 thread가 접근하는 경우 한 thread가 수행하는 동안 공유 자원을 lock하여 다른 thread의 접근을 막음
+
+동기화를 잘못 구현하면 deadlock에 빠질 수 있음
+
+### 자바에서 동기화 구현
+
+synchronized 수행문과 synchronized 메서드를 이용
+
+synchronized 수행문
+```java
+synchronized(참조형 수식){
+
+}//참조형 수식에 해당되는 객체에 lock을 건다
+```
+
+synchronized 메서드
+- 현재 이 메서드가 속해 있는 객체에 lock을 건다.
+- synchronized 메서드 내에서 다른 synchronized 메서드를 호출하지 않는다.
+    - (deadlock 방지를 위해서)
+
+
+```java
+class Bank{
+    private int money = 10000;
+
+    public void saveMone(int save){
+        int m = this.getMoney();
+
+        try{
+            Thread.sleep(3000);
+        }catch(InterruptedException e){}
+
+        setMoney(m + save);
+    }
+    public void minusMoney(int minus){
+        int m = this.money;
+
+        try{
+            thread.sleep(200);
+        }catch(InterruptedException e){}
+
+        setMoney(m - minus);
+    }
+
+    public void setMoney(int money){
+        this.money = money;
+    }
+
+    public int getMoney(){
+        return this.money;
+    }
+
+    
+}
+
+class Park extends Thread{
+    public void run(){
+        System.out.println("save money");
+        Main.myBank.saveMoney(3000);
+        System.out.println("money : " + Main.myBank.getMoney());
+    }
+}
+
+class ParkWife extends Thread{
+    public void run(){
+        System.out.println("get money");
+        Main.myBank.minusMoney(1000);
+        System.out.println("money : " + Main.myBank.getMoney());
+    }
+}
+
+public class Main{
+
+    public static Bank myBank = new Bank();
+
+    public static void main(String[] args) throws InterruptedException{
+        
+        Park p = new Park();
+        p.start();
+
+        Thread.sleep(200);
+
+        ParkWife pw = new ParkWife();
+        pw.start();
+    }
+}
+```
+
+임계 영역에 대한 공유 자원에 대한 스레드 동기화를 제대로 안해주면 원하는 결과를 - 논리적인 결과를 제대로 얻지 못할 수 있다.
+
+> 위의 원하는 결과는 3000원을 저축하고 1000원을 빼는 것이지만
+
+각자 10000원을 m에 저장한다음에 
+- 1000 빼고 저장하는 연산 --- setMoney(9000)
+- 3000 더하고 저장하는 연산 --- setMoney(13000)
+
+순서대로 되기 때문에 `13000`원이 저장된다.
+
+
+그렇기에
+
+`public synchronized void saveMoney(int save)`
+
+`public synchronized void minusMoney(int minus)`
+
+로 synchronized 키워드를 사용하게 되면, **이 메서드가 사용되는 동안 접근하는 자원에 대해서 수행이 끝날때까지 다른 스레드에서 자원에 접근할 수 없다.**
+
+
+**혹은**
+
+```java
+public void saveMoney(int save){
+    synchronized(this){
+    // 메서드 구현
+    }
+}
+```
+
+도 똑같이 위의 결과와 동일한 것을 얻을 수 있다.
+
+--> 안에 (this)자리에 락을 걸기 원하는 객체를 넣어놓는다. 
+
+
+
+### Deadlock
+
+예를 들어 두 개의 스레드가 서로 잠금 해제를 원하지만 서로 해제 시켜주지 못하는 상태
+
+### wait() / notify()
+
+wait()
+- 리소스가 더 이상 유효하지 않은 경우 리소스가 사용 가능할 때까지 위해 thread를 non-runnable 상태로 전환
+- wait() 상태가 된 thread는 notify()가 호출될 때까지 기다린다.
+
+notify()
+- wait() 하고 있는 thread 중 한 thread를 runnable 한 상태로 깨운다.
+
+notifyAll()
+- wait() 하고 있는 모든 thread가 runnable한 상태가 되도록 함
+- notify()보다 notifyAll()을 사용하기를 권장
+- 특정 thread가 통지를 받도록 제어할 수 없으므로 모두 깨운 후 scheduler에 CPU를 점유하는 것이 좀 더 공평하다고 함
+
