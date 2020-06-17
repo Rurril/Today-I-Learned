@@ -88,12 +88,8 @@
 
 ### Java
 
-> **Boost Course**
->> 현재 공부중
-
-
-> [객체지향 프로그래밍 - OOP(Object Oriendted Programming)](https://github.com/Rurril/TIL/blob/master/Language/Java/OOP.md)
->> 정리 추가적으로 필요
+> [**Fast Campus** : 객체 지향 프로그래밍](https://github.com/Rurril/TIL/blob/master/Language/Java/OOP.md)
+>> 일차적인 공부 완료
 
 > [다형성(Polymorphis)](https://github.com/Rurril/TIL/blob/master/Language/Java/Polymorphis.md)
 >> 정리 추가적으로 필요
@@ -107,3 +103,30 @@
 ## ⚙️ CS(Computer Science)
 
 > 부동 소수점(예정)
+
+---
+
+
+## 기타
+
+### 스프링(Spring)
+
+> [자바 빈(Java Bean)](https://github.com/Rurril/TIL/blob/master/Other/Spring/JavaBean.md)
+
+> [책 : 스프링 부트와 AWS로 혼자 구현하는 웹서비스](https://github.com/Rurril/TIL/blob/master/Other/Spring/SpringBootsAndAWS.md)
+
+>> 일시 중단
+
+> [Fast Campus : 스프링 부트 프로젝트](https://github.com/Rurril/TIL/blob/master/Other/Spring/SpringBootsProjects.md)
+
+>> 진행 중
+
+
+> 제어 역행(IoC : Inversion of Control) (TODO)
+
+> [의존성 주입(DI : Dependency Injection)](https://github.com/Rurril/TIL/blob/master/Other/Spring/DI.md)
+
+> 관점 지향 프로그래밍(AOP : Aspect-Oriented Programming) (TODO)
+
+> 스프링 MVC(Model / View / Controller) (TODO)
+
