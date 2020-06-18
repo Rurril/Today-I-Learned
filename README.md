@@ -8,7 +8,7 @@
 
 습관을 들여서 정리하고 조금씩 쌓아가는 걸로 👏
 
-`Algorithm` `Data Structure`  `Kotlin` 
+`Algorithm` `Data Structure`  `Kotlin` `Java` `Spring`
 
 **시작 :** 2020.04.19  
 ## 공부한 것을 정리하기 위함. 
@@ -130,3 +130,8 @@
 
 > 스프링 MVC(Model / View / Controller) (TODO)
 
+---
+
+### 아두이노(Arduino)
+
+> [남은 RAM이 얼만지 알아보기](https://github.com/Rurril/TIL/blob/master/Other/Arduino/MemoryFree.md)
