@@ -821,3 +821,232 @@ Transfer-Encoding: chunked
 
 사용자 계층부터 점점 아래로 내려가면서 사용이 된다... wow.
 
+## JPA
+
+데이터를 유지하기 위해서 영속화 - Persistence가 필요하다
+
+JPA(Java persistence API)가 있다고 한다.
+
+- Hibernate 
+
+@Entity : 가장 중요한 anotation
+
+Spring Data JPA
+
+H2 Database
+- In-memory 방식을 사용한다.
+
+```java
+@Entity
+public class MenuItem {
+    @Id
+    @GeneratedValue
+    private Long id;
+    ...
+}
+```
+
+와 같이 `import javax.persistence`를 사용해서 JPA를 사용해준다. 
+
+```java
+public interface RestaurantRepository extends CrudRepository<Restaurant, Long> {
+    List<Restaurant> findAll();
+
+    Optional<Restaurant> findById(Long id); // Optiional은 널 값이 들어왔을때 문제점을 해결하게 도와준다.
+
+    Restaurant save(Restaurant restaurant);
+}
+```
+
+위에 코드처럼, 이제는 구현부분 impl부분을 다 삭제했음에도, 이상없이 get, post등 모두 제대로 작동하는 것을 볼 수 있다.
+
+존재하는 것은 Interface뿐이고 구현부가 하나도 없는데 이게 가능하다고?
+
+![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=http%3A%2F%2Fcfile28.uf.tistory.com%2Fimage%2F992A2B445AE809E2213070)
+
+위의 그림처럼 , JpaRepository가 아니라 CrudRepository지만 원리는 같을 것이라고 생각한다. 
+
+Spring Data JPA와 같은 API가 그 인터페이스를 받아서 클래스를 구현해서 사용하는 것 
+
+위의 
+- findAll
+- findById
+- save
+
+는 @Override만 안적혀 있었지, 상속받은 인터페이스에서 선언한 메소드들이었던 것
+
+**지금까지 구현했던, Repository들을 모두 힘들게 힘들게 만들었는데, 다 삭제하고 새롭게 API를 사용해서 하는 것에 10분도 안걸리는 시간에 끝내버렸다...**
+
+
+## 프론트엔드
+
+Front-end
+
+Web - Mobile - Desktop
+
+이것들이 우리가 작성한 Bakc-end, REST-API를 사용해서 작동한다.
+
+이 중에서 Web에 대해서 이야기해보자.
+
+> HTML - CSS - JavaScript 프론트엔드의 기본
+
+Node.js --> 서버사이드 자바스크립트
+
+- Webpack을 활용해서, Front-end 처리를 할 예정
+
+프론트엔드 사이드 서버를 따로 실행시킬 예정.
+(CORS) - Cross-Origin Resource Sharing
+
+이것을 스프링에서 @CrossOrigin 이라는 어노테이션을 사용해서 진행한다.
+
+
+
+
+
+
+`npm install --save-dev webpack-cli webpack-dev-server`
+
+dev 키워드를 통해서 개발용으로만 설치를 할 수 있다. 
+
+```java
+@CrossOrigin
+@RestController
+public class RestaurantController
+```
+
+CrossOrigin 어노테이션을 붙임으로써, 웹쪽 서버에서도 서버쪽 서버에 접근할 수 있도록 허용해준다.
+
+`<script src="./main.js"></script>`
+
+webpack 서버는 index.js를 main.js로 해서 실행시킨다고 한다(?)
+
+`"main": "src/index.js"`
+
+package.json에서 위와 같이 등록되어 있는 것을 볼 수 있다. 
+
+
+
+
+```javascript
+element.innerHTML = `
+    ${restaurants[0].id}
+    ${restaurants[0].name}
+`;
+```
+```
+1 CyberFood
+```
+
+결과가 위아래가 다른 것을 볼 수 있다. 참고해서 사용하자 
+
+
+```javascript
+element.innerHTML = JSON.stringify(restaurants);
+```
+
+```
+[{"id":1,"name":"CyberFood","address":"Seoul","menuItems":[],"information":"CyberFood in Seoul"}]
+```
+
+
+```javascript
+element.innerHTML = `
+    ${restaurants.map(restaurants => `
+        <p>
+            ${restaurants.id}
+            ${restaurants.name}
+            ${restaurants.address}
+        </p>
+    `).join('')}
+`;
+```
+
+한번에 처리도 가능하다고 한다... 
+
+일단 이번 강의까지 만든 index.js
+```javascript
+(async () =>{
+    const url = 'http://localhost:8080/restaurants';
+    const response = await fetch(url);
+    const restaurants = await response.json();
+
+    const element = document.getElementById('app');
+    element.innerHTML = `
+        ${restaurants.map(restaurants => `
+            <p>
+                ${restaurants.id}
+                ${restaurants.name}
+                ${restaurants.address}
+            </p>
+        `).join('')}
+    `;
+})();
+```
+
+## 가게 수정
+
+CURD 에서 UPDATE 혹은 PATCH를 사용!
+
+PATCH/restaurants/{id}
+
+@Transactional 어노테이션, 데이터를 고치기만해도 DB에 반영되는 것
+
+```java
+@Transactional
+public Restaurant updateRestaurant(Long id, String name, String address) {
+    Restaurant restaurant = restaurantRepository.findById(id).orElse(null);
+
+    restaurant.updateInformation(name, address);
+    return restaurant;
+}
+```
+
+실제로 이 메서드의 실행을 통해서 DB에 적용되게 어노테이션을 적용시킴으로써
+
+
+```
+[
+    {
+        "address": "Seoul",
+        "id": 1,
+        "information": "Test in Seoul",
+        "menuItems": [],
+        "name": "Test"
+    },
+    {
+        "address": "Seoul",
+        "id": 2,
+        "information": "JJK in Seoul",
+        "menuItems": [],
+        "name": "JJK"
+    }
+]
+```
+
+이렇게 되어있던 것이
+
+`http PATCH localhost:8080/restaurants/1 name=BeRyong address=Busan`
+
+를 통해서
+
+```
+[
+    {
+        "address": "Busan",
+        "id": 1,
+        "information": "BeRyong in Busan",
+        "menuItems": [],
+        "name": "BeRyong"
+    },
+    {
+        "address": "Seoul",
+        "id": 2,
+        "information": "JJK in Seoul",
+        "menuItems": [],
+        "name": "JJK"
+    }
+]
+```
+
+가 되었습니다
+

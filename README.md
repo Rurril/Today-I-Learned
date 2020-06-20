@@ -134,4 +134,4 @@
 
 ### 아두이노(Arduino)
 
-> [남은 RAM이 얼만지 알아보기](https://github.com/Rurril/TIL/blob/master/Other/Arduino/MemoryFree.md)
+> [Free RAM이 얼만지 알아보기](https://github.com/Rurril/TIL/blob/master/Other/Arduino/MemoryFree.md)
