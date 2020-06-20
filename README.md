@@ -43,10 +43,13 @@
 > 수정 중
 ### [투 포인터(Two Pointers)](https://github.com/Rurril/TIL/blob/master/Algorithm/TwoPoinrters.md)
 
-### [LCA(Lowest Common Ancestor)](https://github.com/Rurril/TIL/blob/master/Algorithm/LCA.md)
+### [최소 공통 조상(Lowest Common Ancestor)](https://github.com/Rurril/TIL/blob/master/Algorithm/LCA.md)
 
 ### [에라토스테네스의 체(Sieve of Eratosthenes)](https://github.com/Rurril/TIL/blob/master/Algorithm/Eratosthenes.md)
 > 예정
+
+### [강한 연결 요소(Strongly Connected Component)](https://github.com/Rurril/TIL/blob/master/Algorithm/SCC.md)
+> 타잔 알고리즘 추가 예정
 
 ---
 
