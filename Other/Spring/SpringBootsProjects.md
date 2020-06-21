@@ -1050,3 +1050,175 @@ public Restaurant updateRestaurant(Long id, String name, String address) {
 
 가 되었습니다
 
+## Lombok
+
+Annotation Processor를 사용해서 자동으로 코드를 만들어주는 프로젝트
+
+--> @Setter @Getter , @Builder 도 제공
+
+```java
+@Getter
+public class Restaurant 
+```
+
+를 통해서 앞서 만들었던 getId, getAddress getName 등 모두 직접 선언할 필요가 없어졌다.
+
+
+@Setter도 마찬가지로 클래스 앞에 선언을 해준다면, restaurant 객체를 이용해서 메소드를 부를 때 자동으로 생성되어있어서 사용할 수 있음을 볼 수 있다. 
+
+(혹은 클래스말고 각 요소들에 선언을 해주어도 된다) -- 
+
+```java
+@Setter 
+private int id;
+```
+
+
+```java
+public Restaurant() {
+
+}
+```
+
+이렇게 선언해주는 생성자도
+
+```java
+@NoArgsConstructor
+```
+
+이렇게 클래스에 선언해주는 것으로 해결할 수 있다. 
+
+### 빌더 패턴
+
+```java
+Restaurant restaurant = new Restaurant(1004L, "Bob zip", "Seoul");
+// --- // 
+Restaurant restaurant = Restaurant.builder()
+        .id(1004L)
+        .name("Bob zip")
+        .address("Seoul")
+        .build(); // 위에보다 아래쪽이 빌더패턴이라는 것
+```
+
+위에처럼 레스토랑 객체를 생성하면, 각 담기는 요소가 무엇을 의미하는지 직관적으로 알 수가 없다. 
+
+그래서 코드가 조금 길어지기는 하지만, 빌더패턴을 사용하여 아래와 같이 각 요소의 이름을 적어줌으로써 코드를 직관적으로 볼 수 있게 해준다. 
+
+> @Builder 어노테이션을 클래스에 추가해준다. 
+
+생성자, 요소들이 많아질 수록 점점 더 햇갈려지는 데, 다음과 같이 빌더를 통해서 순서와 상관없이 넣을 수 있게 해줌으로써 더 간단하고 직관적이게 만들어준다.
+
+> 빌더, 그리고 이러한 디자인 패턴을 사용함으로써 다양한 생성자들을 만들어 줄 필요가 없어졌다.
+
+
+```java
+@Entity
+@Getter
+@NoArgsConstructor
+@Builder
+@AllArgsConstructor
+public class Restaurant {
+    
+    @Id
+    @GeneratedValue
+    @Setter
+    private long id;
+
+    private String name;
+    private String address;
+
+    @Transient // 임의로 만들어서, DB처리를 하거나 하지 않을 것이라는 것
+    private List<MenuItem> menuItems;
+
+    public String getInformation(){
+        return name + " in " + address;
+    }
+
+    public List<MenuItem> getMenuItems(){
+        return menuItems;
+    }
+
+    public void setMenuItems(List<MenuItem> menuItems) {
+        this.menuItems = new ArrayList<>(menuItems);
+    }
+
+    public void updateInformation(String name, String address) {
+        this.name = name;
+        this.address = address;
+    }
+}
+```
+
+생성자들과 getter와 setter로 많았을 클래스가 가벼워진 것처럼 보인다. 
+
+
+아래의 MenuItem의 변화가 극적이다..
+
+```java
+@Entity
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class MenuItem {
+
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    private Long restaurantId;
+
+    private String name;
+
+}
+```
+
+## Validation
+
+검증하는 작업, 말 그대로
+
+@NotNull
+@NotEmpty
+@Size(max=10)
+
+이런 것들을 한 번에 @Valid 로 한다. 
+
+HTTP Staus 400 (Bad Request)
+
+```java
+@Test
+public void createWithInvalidData() throws Exception {
+    given(restaurantService.addRestaurant(any())).will(invocation -> {
+        Restaurant restaurant = invocation.getArgument(0);
+        return Restaurant.builder()
+                .id(1234L)
+                .name(restaurant.getName())
+                .address((restaurant.getAddress()))
+                .build();
+    });
+
+    mvc.perform(post("/restaurants")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{\"name\":\"\",\"address\":\"\"}"))
+            .andExpect(status().isBadRequest());
+}
+```
+
+실제 컨트롤러에서 created로 받는 @Valid로 요소에 어노테이션 해주고, 
+
+Restaurant가 받는 인자드를 @NotEmpty 어노테이션을 넣어줌으로서 받드시 들어가야함을 나타내게 한다.   
+
+그럼으로써 위의 테스트가 통과가 되는 것을 볼 수 있다. 
+
+```java
+@Test
+public void updateWithoutName() throws Exception {
+    mvc.perform(patch("/restaurants/1004")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{\"name\":\"\",\"address\":\"Busan\"}"))
+            .andExpect(status().isBadRequest());
+}
+```
+
+조금이라도 미심쩍은 상황, 케이스들이 있다면, 직접 이렇게 Name만 없이 입력해보고 예상하던 값이 나오는지를 확인할 수가 있다.
+
