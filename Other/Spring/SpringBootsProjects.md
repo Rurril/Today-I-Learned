@@ -1222,3 +1222,186 @@ public void updateWithoutName() throws Exception {
 
 조금이라도 미심쩍은 상황, 케이스들이 있다면, 직접 이렇게 Name만 없이 입력해보고 예상하던 값이 나오는지를 확인할 수가 있다.
 
+
+## 에러 처리
+
+Not Found 404
+
+Exception 처리들...
+
+HTTP Status 404(Not Found)
+
+@ControllerAdvice -- 예외를 던져주고 확인하는 것
+
+예외 처리를 try - catch 를 해도 좋지만 더 좋은 도구가 있다. 
+
+
+```java
+@ControllerAdvice
+public class RestaurantErrorAdvice {
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(RestaurantNotFoundException.class)
+    public void handleNotFound(){
+
+    }
+}
+```
+
+아니 그냥 클래스를 생성하고 어노테이션만 적용했을 뿐인데, 404 Not Found 에러가 발생하면 이쪽으로와서 처리를 해주고 그에 해당하는 ResponseStatus를 돌려준다.
+
+객체 선언 이런거 아무것도 안했음에도...
+
+```java
+@ControllerAdvice
+public class RestaurantErrorAdvice {
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(RestaurantNotFoundException.class)
+    public String handleNotFound(){
+        return "{}";
+    }
+}
+```
+
+
+무언가 원하는 것을 돌려주고 싶다면, 이렇게 @ReponseBody를 통해서 return 값이 제대로 적용될 수 있다. 
+
+처음에는 테스트하는게 많지 않았지만, 점점 예상되는 에러들이 많기 때문에 테스트들이 늘어나는 것을 볼 수 있다.
+```
+RestaurantControllerTest.detail
+RestaurantControllerTest.createWithInvalidData
+RestaurantControllerTest.updateWithValidData
+RestaurantControllerTest.list
+RestaurantControllerTest.updateWithInvalidData
+RestaurantControllerTest.detailWithNotExisted
+RestaurantControllerTest.updateWithoutName
+RestaurantControllerTest.createWithValidData
+```
+
+```java
+
+Restaurant restaurant = restaurantRepository.findById(id)
+                .orElseThrow(() -> new RestaurantNotFoundException(id));
+
+```
+
+getRestaurant에서 orElseThrow에 들어올 때만 새로운 객체를 생성해주는 식으로 하고 싶으므로(예외일 때만), 람다식을 사용해서 객체를 생성해서 넣어준다. 
+
+
+```java
+@Test(expected = RestaurantNotFoundException.class)
+public void getRestaurantWithNotExisted(){
+    restaurantService.getRestaurant(404L);
+}
+```
+
+테스트를 통해서, 또한 expected를 통해서 원하는 예외가 들어오는지를 확인할 수 있다. 
+
+> expected를 안해준다면, 그냥 그대로 404 Not Found Error가 나오는 것을 알 수 있다.
+
+
+## 메뉴 관리
+
+MenuItem을 추가, 수정하는 작업 그리고 삭제하는 작업
+
+Bulk Update -- 한 번에 여러개를 업데이트 하는 것
+
+
+> PATCH /restaurants/{id}/menuitems
+
+성공하면 200, 아니면 400번대 에러
+
+- save 
+
+- deletedBytId
+
+두 가지를 용도에 따라서 다르게 사용.
+
+
+```java
+@Test
+public void bulkUpdate() throws Exception {
+    mvc.perform(patch("/restaurants/1/menuitems")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("[]]"))
+            .andExpect(status().isOk());
+
+    verify(menuItemService).bulkUpdate(eq(1L), any());
+}
+```
+
+
+verify 부분에서 eq(1L)은 1L과 같다는 의미로, 이것을 안했을 때 에러가 나더라
+
+verify는 검증하는 메서드로 menuItemService가 bulkUpdate, 그 안에 인자로 (1과 같은 것과 any()) 아무거나 들어가도록 했는 지를 검증하는 것이므로 그냥 '1L'이라고 넣으면 안되고 eq를 넣어줘야하는 것 같다.
+
+```java
+@RestController
+public class MenuItemController {
+
+    @Autowired
+    private MenuItemService menuItemService;
+
+    @PatchMapping("/restaurants/{restaurantId}/menuitems")
+    public String bulkUpdate (@PathVariable("restaurantId") Long restaurantId,  @RequestBody List<MenuItem> menuItems){
+
+        menuItemService.bulkUpdate(restaurantId, menuItems);
+        return "";
+    }
+}
+```
+
+이번에 만든 메뉴아이템 컨트롤러
+
+```java
+private MenuItemRepository menuItemsRepository;
+
+@Autowired
+public MenuItemService(MenuItemRepository menuItemsRepository) {
+    this.menuItemsRepository = menuItemsRepository;
+}
+```
+
+@Autowired 어노테이션을 위에다가 붙여도 되고, 아래에다가 붙여도 된다. 
+
+
+```java
+menuItems.add(MenuItem.builder().name("Kimchi").build());
+menuItems.add(MenuItem.builder().name("Gukbob").build());
+menuItemService.bulkUpdate(1L, menuItems);
+
+verify(menuItemRepository, times(2)).save(any());
+```
+
+위에서 menuItems가 2개 add 됬으므로, 
+
+times 메소드를 통해서 2번 실행되는 가를 확인할 수 있다. 
+
+`http PATCH localhost:8080/restaurants/1/menuitems < menuitems.json`
+
+을 통해서 제대로 넣어서 들어간 것을 볼 수 있다. 
+
+
+```json
+{
+    "address": "Seoul",
+    "id": 1,
+    "information": "FakeRest in Seoul",
+    "menuItems": [
+        {
+            "id": 3,
+            "name": "Kimchi",
+            "restaurantId": 1
+        },
+        {
+            "id": 4,
+            "name": "Gukbob",
+            "restaurantId": 1
+        }
+    ],
+    "name": "FakeRest"
+}
+
+```
