@@ -1497,3 +1497,31 @@ public void createWithInvalidAttributes() throws Exception {
 
 Invalid한 데이터가 들어오므로, never()를 사용해서 실행되면 안된다는 것을 나타낸다. 
 
+## 프로젝트 분리
+
+사용자 - 관리자, 고객으로 크게 나눌 수 있다.
+
+두 사용자에게 비슷하지만 다른 서비스를 제공해야한다.
+
+- admin-api
+- customer-api
+
+그리고 둘이 공통으로 사용할 common을 분리한다.
+
+
+### 멀티프로젝트 적용 오류(화가난다)
+
+```gradle
+jar{
+    enabled = true
+}
+```
+
+eatgo-common : build.gradle에 이 부분을 넣어주지 않는다면,
+
+gradle에서 common을 eatgo-admin-api에 사용하는 기능이 적용이 안된다(default가 false인듯)
+
+그래서 이 부분을 넣어주면, 멀티 프로젝트가 적용이 잘되고 사용할 수 있다. ^^
+
+이 부분에 대해서 알지 못하고 구글링, 삽질만 주구장창 하다가 이렇게 쉽게 되니까 너무 화가난다.
+
