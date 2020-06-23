@@ -1403,5 +1403,97 @@ times 메소드를 통해서 2번 실행되는 가를 확인할 수 있다.
     ],
     "name": "FakeRest"
 }
-
 ```
+
+
+```json
+{
+    "address": "Seoul",
+    "id": 1,
+    "information": "Bob zip in Seoul",
+    "menuItems": [
+        {
+            "destroy": false,
+            "id": 2,
+            "name": "Kim chi",
+            "restaurantId": 1
+        },
+        {
+            "destroy": false,
+            "id": 3,
+            "name": "Gukbob",
+            "restaurantId": 1
+        }
+    ],
+    "name": "Bob zip"
+}
+```
+`PATCH localhost:8080/restaurants/1/menuitems < menuitems.json`
+
+```json
+[
+  {
+    "id" : 2,
+    "name" : "Kim CChi"
+  },
+  {
+    "id" : 3,
+    "destroy" : true
+  }
+]
+```
+```json
+{
+    "address": "Seoul",
+    "id": 1,
+    "information": "Bob zip in Seoul",
+    "menuItems": [
+        {
+            "destroy": false,
+            "id": 2,
+            "name": "Kim CChi",
+            "restaurantId": 1
+        }
+    ],
+    "name": "Bob zip"
+}
+```
+
+무사히 destroy 인자를 통해서 id3인 것을 삭제하고 id 2인 것의 이름을 업데이트한 모습이다.
+
+```java
+@Transient
+@JsonInclude(JsonInclude.Include.NON_DEFAULT)
+private boolean destroy;
+```
+
+MenuItem 클래스에 다음과 같이 추가해서, DB 처리를 하지는 않지만, 그래도 사용하는 @Transient 어노테이션을 사용해서 삭제연산인지 추가(혹은 수정) 연산인지 알 수 있게 하였다. 
+
+> 추가적으로 JsonInclude를 통해서 non_default 즉, false가 아니라 true일 때만 JSON에 추가하도록 설정한 것
+
+
+
+--> Bulkupdate라는 것을 통해서 CRUD 연산들을 한 번에 해결할 수 있게 하였다.
+
+
+## 리뷰 작성
+
+고객 평가 - 리뷰 (텍스트, 평정)
+
+`POST /restaurants/{id}/reviews`
+
+
+```java
+@Test
+public void createWithInvalidAttributes() throws Exception {
+    mvc.perform(post("/restaurants/1/reviews")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{}"))
+            .andExpect(status().isBadRequest());
+
+    verify(reviewService, never()).addReview(any());
+}
+```
+
+Invalid한 데이터가 들어오므로, never()를 사용해서 실행되면 안된다는 것을 나타낸다. 
+
