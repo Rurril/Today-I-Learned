@@ -1525,3 +1525,89 @@ gradle에서 common을 eatgo-admin-api에 사용하는 기능이 적용이 안�
 
 이 부분에 대해서 알지 못하고 구글링, 삽질만 주구장창 하다가 이렇게 쉽게 되니까 너무 화가난다.
 
+
+Customer - api까지 만들어주고 동시에 실행시키려고 하면 어떻게 될까? 
+
+Port8080이 곂쳐서 binding 되어있다는 오류를 만난다. -- 이 부분에 대해서는 나중에 스프링 설정하면서 배우겠다. 
+
+Terminal 에서 gradle을 사용해서 명령어를 통해서 전체 테스트를 진행할 수 있다.
+
+`gradle test`와 같은 명령어를 통해서, 이 외적인 명령어를 통해서 다양한 테스트 및 확인 작업들을 할 수 있다. 
+
+`gradle build` 를 통해서는 전체 빌드를 하면서도 테스트도 진행하는 것을 볼 수 있다. 
+
+인텔리제이를 통해서 사용하기 위해서는 
+
+1. Edit configurations -> gradle configuration을 만들고서 
+
+2. gradle project 이름 지어주고
+
+3. Task에다가 명령어를 넣어준다 
+    - 예시로는 clean 하고 test하기 위해서 `clean test`를 넣어주었다.
+    - gradle clean  -> gradle test 한 거랑 똑같은 명령어를 만들어 주는 것
+
+
+인텔리제이에서는 Build 툴을 선택하는 것에서 JUnit을 할 수도 있고, Gradle을 설정해서 할수도 있다. 
+
+(뭐가 좋은지는 아직 모르겠지만, gradle을 추천하는 것 보니 괜찮지 않을까 싶다)
+
+## 진짜 영속화
+
+앱을 껏다가 키더라도 살아있는 프로그램을 만들자
+
+H2 Database - Memory File
+
+테스트하면서 실행되는 것도 기록되길 원할 수도 있다 - Profiles 개념
+
+```yml
+#yml 은 xml 패러디 비슷한 것, json 보다 더 간단한 형식을 보인다.
+spring:
+  datasource:
+    url: jdbc:h2:~/data/eatgo
+  jpa:
+    # 스프링 jpa는 하이버네이트를 기본적으로 사용한다.
+    hibernate:
+      ddl-auto: update
+```
+
+application.properties를 수정해준 것으로 
+
+데이터를 추가해주고 앱을 껏다가 키더라도 그대로 데이터들이 살아있는 것을 볼 수 있다.
+
+h2 database에서는 한 어플리케이션에서 다른 어플리케이션으로 접근을 할 수가 없다. 
+
+나중에는 올바른 mysql, mariaDB같은 것을 사용해서 제대로 사용할 것이지만, 지금은 임시적으로 껏다 켯다를 반복해서 사용하도록 한다..
+
+> 사용자냐 관리자냐에 따라서, 똑같은 GET을 사용하더라도 얻는 정보의 질과 양이 다르게 설정하였다. 
+
+> 사용자 : GET /restaurant/{id} 를 통해서 메뉴까지 얻지만 
+
+> 관리자 : GET /restaurnat/{id} 를 통해서 메뉴를 얻지 않는다. 
+
+
+> 사용자 : POST /restaurant/{id}/reviews 를 통해서 리뷰를 작성하지만
+
+> 관리자 : GET /reviews 를 통해서 리뷰를 확인할 수 있다. 
+
+
+profiles 사용
+
+```yml
+spring:
+  profiles: test
+  datasource:
+    url: jdbc:h2:mem:test
+```
+
+이 부분을 추가시켜 줌으로써 테스트는 별개로 진행하도록 한다.
+
+이와 같이 gradle을 사용해서 테스트 할 수 있는 것이 
+
+`SPRING_PROFILES_ACTIVE=test ./gradlew test`
+
+혹은 `SPRING_PROFILES_ACTIVE=test gradle test`
+
+인텔리제이에 있는 것을 이용해서 gradle 프로젝트 -- 예시로 만든 Test All에다가 
+
+Environment variables 에다가 SPRING_PROFILES_ACTIVE=test 을 사용해줘도 같은 효과를 볼 수 있다. 
+
