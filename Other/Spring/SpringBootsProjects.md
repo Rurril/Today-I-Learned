@@ -1611,3 +1611,30 @@ spring:
 
 Environment variables 에다가 SPRING_PROFILES_ACTIVE=test 을 사용해줘도 같은 효과를 볼 수 있다. 
 
+## 가게 목록 필터링
+
+필터링 - 지역, 분류 로 두 가지로 필터링하도록 설정
+
+(Region, Category)
+
+관리자 : GET /regions , POST /regions
+
+고객 : GET /regions
+
+--
+
+관리자 : GET /categories, POST /categories
+
+고객 : GET /categories
+
+
+findAllByAddressContaining -- 문자열을 포함하는 어드레스를 반환
+
+findAllByAddressStartingWith -- 문자열이 앞에 포함되는 어드레스 반환
+
+H2 Console이라는 것을 이용해서 가게 정보를, DB를 접근해서 수정할 수 있게 한다.
+
+`http://localhost:8080/h2-console`을 사용해서 접근해서 사용할 수 있다. 
+
+하나의 필터링 기능을 만들라고 정말 여러개를 뒤엎고 협력해서 만들도록 되었다..
+
