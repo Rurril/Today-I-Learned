@@ -28,25 +28,22 @@
 ### [백트래킹(Backtracking)](https://github.com/Rurril/Today-I-Learned/blob/master/Algorithm/Backtracking.md)
 ### [탐욕 알고리즘(Grid Algorithm)](https://github.com/Rurril/Today-I-Learned/blob/master/Algorithm/%EA%B7%B8%EB%A6%AC%EB%93%9C%20%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98.md)
 ### 문자열 처리
-> KMP, LCP - 예정
+> KMP, LCP - TODO
 ### 수학
-> 유클리드 호제법 - 예정
+> 유클리드 호제법 - TODO
 ### [분할 정복(Divide and Conquer)](https://github.com/Rurril/Today-I-Learned/blob/master/Algorithm/%EB%B6%84%ED%95%A0%EC%A0%95%EB%B3%B5.md)
 ### [좌표압축 알고리즘](https://github.com/Rurril/Today-I-Learned/blob/master/Algorithm/%EC%A2%8C%ED%91%9C%EC%95%95%EC%B6%95%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98.md)
 ### [최단 경로(Shortest Path)](https://github.com/Rurril/Today-I-Learned/blob/master/Algorithm/%EC%B5%9C%EB%8B%A8%EA%B2%BD%EB%A1%9C%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98.md)
-> 다익스트라 / 벨만-포드 / 플로이드 와샬(예정)
+> 다익스트라 / 벨만-포드 / 플로이드 와샬(TODO)
 ### [Parametric Search]()
-> 이진탐색을 공부하면서 적용하는 응용 알고리즘 문제들..
-
-> 예정
+> 이진탐색을 공부하면서 적용하는 응용 알고리즘 문제들..(TODO)
 ### [비트마스킹(Bit Masking)](https://github.com/Rurril/Today-I-Learned/blob/master/Algorithm/%EB%B9%84%ED%8A%B8%EB%A7%88%EC%8A%A4%ED%82%B9.md)
 > 수정 중
 ### [투 포인터(Two Pointers)](https://github.com/Rurril/Today-I-Learned/blob/master/Algorithm/TwoPoinrters.md)
 
 ### [최소 공통 조상(Lowest Common Ancestor)](https://github.com/Rurril/Today-I-Learned/blob/master/Algorithm/LCA.md)
 
-### [에라토스테네스의 체(Sieve of Eratosthenes)](https://github.com/Rurril/Today-I-Learned/blob/master/Algorithm/Eratosthenes.md)
-> 예정
+### [에라토스테네스의 체(Sieve of Eratosthenes)](https://github.com/Rurril/Today-I-Learned/blob/master/Algorithm/Eratosthenes.md) TODO
 
 ### [강한 연결 요소(Strongly Connected Component)](https://github.com/Rurril/Today-I-Learned/blob/master/Algorithm/SCC.md)
 > 타잔 알고리즘 추가 예정
@@ -64,8 +61,11 @@
 
 ### [선형 자료구조(Linear Data Structure)](https://github.com/Rurril/Today-I-Learned/blob/master/Data_Structure/선형자료구조.md)
 
-### [서로소 집합(Disjoint Set) - 유니온 파인드(Union-Find)](https://github.com/Rurril/Today-I-Learned/blob/master/Data_Structure/Disjoint_Set.md)
+### [분리 집합(Disjoint Set) - 유니온 파인드(Union-Find)](https://github.com/Rurril/Today-I-Learned/blob/master/Data_Structure/Disjoint_Set.md)
 > 추가 수정 필요
+
+### 희소 행렬(Sparse Table) (TODO)
+
 
 ---
 
