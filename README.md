@@ -140,3 +140,5 @@
 > [Free RAM이 얼만지 알아보기](https://github.com/Rurril/Today-I-Learned/blob/master/Other/Arduino/MemoryFree.md)
 
 > [Arduino EEPROM](https://github.com/Rurril/Today-I-Learned/blob/master/Other/Arduino/EEPROM.md)
+
+> [Flash Memory 사용하기](https://github.com/Rurril/Today-I-Learned/blob/master/Other/Arduino/UseFlashMemory.md)
