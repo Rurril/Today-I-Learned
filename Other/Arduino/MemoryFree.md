@@ -16,7 +16,7 @@ MemoryFree는 RAM이 얼마나 사용되고 있는지 알기에 유용하다.
 
 Arduino 33 iot를 사용하는데 기존에 있던 다른 라이브러리인 [https://github.com/McNeight/MemoryFree]는 프로세서가 달라서 적용이 안되는 것을 알 수 있었다.
 
-위의 라이브러리는 최신 프로세서에서도 적용가능하니 참고 바란다. (오히려 그전 프로세서는 모릅니다)
+위의 라이브러리는 최신 프로세서에서도 적용가능하니 참고 바람. (MEGA 2560에서도 잘 작동되네요)
 
 ```Arduino
 #include <MemoryFree.h>
