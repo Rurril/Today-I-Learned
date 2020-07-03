@@ -99,7 +99,7 @@ uint64_t number = ((uint64_t)pgm_read_dword_far(constants)<<32) | (pgm_read_dwor
 
 ```c
 uint64_t returnConstant(int i){
-  return ((uint64_t)pgm_read_dword_far(constants)<<32) | (pgm_read_dword_far(constants + 1));
+  return ((uint64_t)pgm_read_dword_far(constants + 2 * i)<<32) | (pgm_read_dword_far(constants + 2 * i + 1));
 }
 ```
 
