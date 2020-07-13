@@ -8,7 +8,7 @@
 
 습관을 들여서 정리하고 조금씩 쌓아가는 걸로 👏
 
-`Algorithm` `Data Structure`  `Kotlin` `Java` `Spring`
+`Algorithm` `Data Structure`  `Kotlin` `Java` `Spring` `Node`
 
 **시작 :** 2020.04.19  
 ## 공부한 것을 정리하기 위함. 
@@ -92,7 +92,6 @@
 ### Java
 
 > [**Fast Campus** : 객체 지향 프로그래밍](https://github.com/Rurril/Today-I-Learned/blob/master/Language/Java/OOP.md)
->> 일차적인 공부 완료
 
 > [다형성(Polymorphis)](https://github.com/Rurril/Today-I-Learned/blob/master/Language/Java/Polymorphis.md)
 >> 정리 추가적으로 필요
@@ -101,6 +100,13 @@
 >> 정리 추가적으로 필요
 
 > Call by value VS Call by reference (TODO)
+
+
+### Node
+
+> [Fast Campus Lecture](https://github.com/Rurril/Today-I-Learned/blob/master/Language/Node/README.md)
+
+
 ---
 
 ## ⚙️ CS(Computer Science)
