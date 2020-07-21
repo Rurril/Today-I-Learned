@@ -95,17 +95,89 @@ npm uninstall - 삭제 (글로벌 옵션을 주었다면, 똑같이 -g를 넣어
 
 ## Node.js_Chapter1_Semantic versioning
 
+문맥적으로 의미가 있는 버저닝 체계
+
+|Code status|Stage|Rule|Example Version|
+|:---|---:|:---:|:---:|
+|First release|New product|Start with 1.0.0|1.0.0|
+|하위 호완이 가능한 버전|Patch release|Increment ths third digit|1.0.1|
+|하위 호완이 가능(기능 추가)|Minor release|Increment the middle digit and reset last digit to zero|1.1.0|
+|하위 호완이 불가능(중요한 변화)|Major release|Increment the first digit and reset middle and last digits to zero|2.0.0|
+
 
 ## Node.js_Chapter1_npx
+
+
+스테이징 환경에서 테스트 용도로 사용하기 좋다. 
+
+- npm은 컴퓨터, 서버에 설치를 해서 실행을 하는 방식
+- npx는 저장해서 실행하는 것이 아닌, 한 번 실행해보는 것이 목적.
+    - 임시 폴더에 설정이 되고, 모듈이 다운되면 실행한다. (ex - cowsay 모듈)
+
+
+```
+npx cowsay "hello" --의 결과 
+ _______
+< hello >
+ -------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+```
 
 
 ## Node.js_Chapter1_nodemon (재촬영)
 
 
+파일에 변화가 생기면, 파일의 변화를 감지하고 변화된 파일을 실행을 해준다. 
+
+
 ## Node.js_Chapter1_Module.exports
+
+```js
+function edit(){}
+function write(){}
+
+module.exports = {
+    edit,
+    write,
+    fn : () => {
+        console.log('this is a function')
+    }
+}
+```
+
+위와 같은 식으로 객체를 만들어서 export할 수도 있고 단일 객체로 보낼 수도 있다. 
+
 
 
 ## Node.js_Chapter1_Event Loop 자료구조 (재촬영)
+
+```js
+
+// 큐 FIFO
+const queue = []
+queue.push(1);
+queue.push(2);
+queue.push(3);
+
+const a = queue.shift(); // pop인줄 알았는데, pop은 가장 나중에 넣은거 꺼내더라. 
+console.log(a); // 1이 나오게 됨. 
+```
+
+```js
+// 스택 FILO
+const stack = []
+queue.push(1);
+queue.push(2);
+queue.push(3);
+
+const a = queue.pop(); 
+console.log(a); // 3이 나오게 됨. 
+```
+
 
 
 ## Node.js_Chapter1_Event Loop 실습 (재촬영)
@@ -121,41 +193,43 @@ npm uninstall - 삭제 (글로벌 옵션을 주었다면, 똑같이 -g를 넣어
 ## Node.js_Chapter2_forEach
 
 
-18. Node.js_Chapter2_Map, Filter (재촬영)
-2:49
+## Node.js_Chapter2_Map, Filter (재촬영)
 
-19. Node.js_Chapter2_Object.assign vs spread
-6:46
 
-20. Node.js_Chapter2_Set
-4:53
+## Node.js_Chapter2_Object.assign vs spread
 
-21. Node.js_Chapter2_some
-5:33
 
-22. Node.js_Chapter2_Template String
-6:29
+## Node.js_Chapter2_Set
 
-23. Node.js_Chapter2_String
-11:24
 
-24. Node.js_Chapter2_Type checking
-3:50
+## Node.js_Chapter2_some
 
-25. Node.js_Chapter2_Hoisting (재촬영)
-3:17
 
-26. Node.js_Chapter2_IIFE (재촬영)
-5:11
+## Node.js_Chapter2_Template String
 
-27. Node.js_Chapter2_setInterval (재촬영)
-1:24
 
-28. Node.js_Chapter3_Error handling (재촬영)
-1:32
+## Node.js_Chapter2_String
 
-29. Node.js_Chapter3_Error handling 연습문제 (재촬영)
-1:27
+
+## Node.js_Chapter2_Type checking
+
+
+## Node.js_Chapter2_Hoisting (재촬영)
+
+
+## Node.js_Chapter2_IIFE (재촬영)
+
+
+## Node.js_Chapter2_setInterval (재촬영)
+
+
+----
+
+## Node.js_Chapter3_Error handling (재촬영)
+
+
+## Node.js_Chapter3_Error handling 연습문제 (재촬영)
+
 
 30. Node.js_Chapter3_Error handling 연습문제 해설 (재촬영)
 1:27
