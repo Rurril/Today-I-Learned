@@ -186,42 +186,292 @@ console.log(a); // 3이 나오게 됨.
 
 ## Node.js_Chapter2_every
 
+특정한 배열이 있을 때, 해당하는 배열이 조건에 대해서 모두다 만족할 경우 체크하는 기능을 제공
+
+```js
+'use strict'
+
+const arr = [2,3,4];
+
+const isBiggerThanOne = arr.every(key => key > 1);
+
+console.log(isBiggerThanOne);
+```
+
+true를 반환하는 것을 볼 수가 있다. 
+
+key에 대해서 arrow function을 정의해서 모두 만족할 경우 true를 반환한 것을 볼 수 있다.
+
+
+
 
 ## Node.js_Chapter2_Find, includes
+
+```js
+'use strict'
+
+const arr = ['node.js', '올인원'];
+
+const ret = arr.find(key => key === '올인원')
+
+console.log(ret);
+
+```
+
+배열에 두 가지의 요소가 있음에도, ret에 들어온 것은 '올인원'만 들어온 것을 확인할 수 있다. 
+
+```js
+const res = arr.includes('node.js');
+console.log(res);
+```
+
+위에거에 이어서, 사용한다면 include는 그 값이 있는지 확인하는 경우를 리턴해준다.
+
+위의 예시에서는 true를 반환해서 출력하는 것을 볼 수가 있다. 
+
+데이터 조건만 필요할 경우에는 find가 아닌 include로 확인만 진행할 수 있다. 
 
 
 ## Node.js_Chapter2_forEach
 
+```js
+'use strict'
+
+const arr = [1,2,3];
+
+arr.forEach(item => console.log(item));
+```
+
+배열의 요소인 1,2,3이 순차적으로 출력됨을 볼 수가 있다. 
+
+실제로 사용할 때는, arrow function을 통해서 출력 뿐만 아니라 다양한 방법을 적용할 수 있다. 
 
 ## Node.js_Chapter2_Map, Filter (재촬영)
+
+```js
+'use strict'
+
+const a = [1,2,3];
+const b = a.map(x => x + 1);
+
+console.log(b);
+```
+
+a에 담긴 [1,2,3]에서 +1되어서 b는 [2,3,4]가 저장되는 것을 볼 수가 있다. 
+
+배열의 요소에 정의한 콜백 함수를 적용해서 리턴하는 함수라고 볼 수 있겠다.
+
+```js
+'use strict'
+
+const a = [1,2,3];
+const b = a.filter(x => x > 1);
+
+console.log(b);
+```
+
+Filter는 콜백 함수에 적합한 값을 가지는 배열의 요소들만을 리턴해주는 역할을 한다. 
 
 
 ## Node.js_Chapter2_Object.assign vs spread
 
+```js
+'use strict'
+'use strict'
+
+const obj = {
+    title : 'node.js 올인원 패키지'
+}
+
+const newObj = {
+    name : '패스트캠퍼스'
+}
+
+const res = Object.assign(obj, newObj);
+const ret = {
+    ...obj,
+    ...newObj
+}
+
+console.log(res);
+console.log(ret);
+```
+
+두 개의 오브젝트를 통합하는 2 가지 방식에 대해서 소개한다.
+
+위의 Object.assign은 직접 선언해서 두 개를 통합해서 리턴해주었고
+
+아래의 spread 방식은 좀 더 직관적이고 간단하게 두 개를 통합해서 주었다. 
+
+spread는 말 그대로 나누는 것으로, 한 obj가 여러가지 요소들을 갖고 있더라도 나누어서 뿌려줄 수 있는 기능이다. 
 
 ## Node.js_Chapter2_Set
 
+중복되지 않은 데이터 셋을 얻고 싶을 때 사용하는 자료구조
+
+```js
+'use strict'
+
+const test = new Set()
+
+test.add(1)
+test.add(1)
+test.add(2)
+test.add(2)
+test.add(3)
+test.add(3)
+
+for(const item of test){
+    console.log(item)
+}
+```
+
+데이터가 중복되지 않고 [1,2,3]만 갖고 있는 것을 알 수 있다. 
 
 ## Node.js_Chapter2_some
 
+```js
+'use strict'
+
+const arr = [0,-1,-2]
+
+const ret = arr.some(key => key < 0)
+
+console.log(ret)
+
+```
+
+하나라도 콜백 함수에 대해서 만족하는 것이 있다면 true 아니면 false이다. 
+
+여기서는 true라는 것을 알 수 있다. 
+
+Every는 모든 조건을 만족시켜야 하지만, some은 하나라도 만족하면 된다.
 
 ## Node.js_Chapter2_Template String
 
 
+Template String을 사용하게 되면 상수와 변수에 손쉽게 입력할 수 있다. 
+
+단순히 연결하는 것 뿐만 아니라, 숫자 데이터도 String으로 변환이 쉽게 가능하다. 
+
+```js
+'use strict'
+
+
+const details = '자세한 내용'
+let str = 'node.js'
+
+str += `올인원 패키지${details}`
+const int = 1
+str += `${str}의 값은 ${int}`
+
+console.log(str)
+```
+
+모든 내용들을 간단하게 string으로 묶어서 출력할 수 있다. 
+
+`node.js올인원 패키지자세한 내용node.js올인원 패키지자세한 내용의 값은 1`이 출력된다.
+
+나중에 react 등에서 주로 쓰이는 기능 다음에 자세히 알아보자. 
+
 ## Node.js_Chapter2_String
 
+```js
+'use strict'
+
+let string = 'node.js 올인원 패키지'
+
+let isStartWith = string.startsWith('n')
+let isIncludes = string.includes('올인원')
+let isEndWith = string.endsWith('지')
+console.log(isStartWith)
+console.log(isIncludes)
+console.log(isEndWith)
+```
+
+JS는 기본적으로 유니코드를 지원하기 때문에, 한 글자도 한 자로 인식할 수 있기 때문에 위의 세 변수들이 모두 true로 나오게 된다. 
+
+시작 부분, 중간, 끝 에서 해당하는 문자가 있는지 확인할 수 있다. 
 
 ## Node.js_Chapter2_Type checking
 
+```js
+'use strict'
+
+const string = 'node.js'
+const array = []
+const obj = {}
+
+console.log(typeof string) // string
+console.log(typeof array) // object
+console.log(typeof obj) // object
+```
+
+array는 obj의 부분집합이므로, object로 나타나는 것을 알 수 있다. 
+
+typeof를 통해서 해당하는 값의 타입을 확인할 수 있다. 
 
 ## Node.js_Chapter2_Hoisting (재촬영)
+
+```js
+'use strict'
+
+say('hi')
+function say(word){
+    console.log(word)
+}
+```
+
+함수를 정의하기 전에 미리 실행하고 그 다음에 정의해도 제대로 실행되는 것
+
+이것이 JS의 Hoisting 특징이라고 한다.
+
+JS는 함수 안에 있는 선언들을 모두 끌어올려서 해당 함수 유효 범위의 최상단에 선언하는 것을 말한다.
+
+자바스크립트 함수는 실행되기 전에 함수 안에 필요한 변수값들을 모두 모아서 유효 범위의 최상단에 선언한다는 것.
 
 
 ## Node.js_Chapter2_IIFE (재촬영)
 
+IIFE : 즉시 실행 함수 표현 - 정의되자 마자 즉시 실행되는 JS 함수를 말한다. 
+- Immediately Invoked Function Expression
+
+```js
+'use strict'
+
+(function () { console.log('Hello World') })(); // Hello World
+```
+
+위는, 함수의 이름이 없는 '익명 함수'로써 바로 정의되자마자 바로 실행한다. - 맨 마지막에 '()'을 통해서 즉시 실행하는 코드라는 것을 나타낸다. 
+
+보편적으로는 전역 스코프를 오염시키지 않기 위해 사용하는 경우가 많다. 
+
+```js
+'use strict'
+
+const add = (function(a, b) { return a + b })(1, 2); // 3
+
+console.log(add)
+```
+
+위의 예시의 실행은 바로 '3'이 출력되는 것인데, 
+
+선언하고서 바로 사용됨으로써 값으로서 평가되는 것이 IIFE 라는 것.
+
 
 ## Node.js_Chapter2_setInterval (재촬영)
 
+특정 간격으로 실행시킬 수 있는 것이 setInterval 함수
+
+```js
+'use strict'
+
+setInterval(() => {
+    console.log('hi')
+}, 1000);
+```
+
+위와 같이 실행시키면, 1000ms 즉, 1초마다 hi라는 문장을 무한대로 출력하는 결과를 볼 수 있다. 
 
 ----
 
@@ -231,149 +481,107 @@ console.log(a); // 3이 나오게 됨.
 ## Node.js_Chapter3_Error handling 연습문제 (재촬영)
 
 
-30. Node.js_Chapter3_Error handling 연습문제 해설 (재촬영)
-1:27
+## Node.js_Chapter3_Error handling 연습문제 해설 (재촬영)
 
-31. Node.js_Chapter3_Arrow Functions
-8:45
+## Node.js_Chapter3_Arrow Functions
 
-32. Node.js_Chapter3_Arrow Functions 연습문제
-9:37
+## Node.js_Chapter3_Arrow Functions 연습문제
 
-33. Node.js_Chapter3_Arrow Functions 연습문제 해설
-17:07
+## Node.js_Chapter3_Arrow Functions 연습문제 해설
 
-34. Node.js_Chapter3_Class (1) (기존영상)
-15:05
+## Node.js_Chapter3_Class (1) (기존영상)
 
-35. Node.js_Chapter3_Class Extends (기존영상)
-9:35
+## Node.js_Chapter3_Class Extends (기존영상)
 
-36. Node.js_Chapter3_Class (1) (추가촬영)
-2:34
+## Node.js_Chapter3_Class (1) (추가촬영)
 
-37. Node.js_Chapter3_Class (2) (추가촬영)
-3:50
+## Node.js_Chapter3_Class (2) (추가촬영)
 
-38. Node.js_Chapter3_Static method
-5:44
+## Node.js_Chapter3_Static method
 
-39. Node.js_Chapter3_Destructuring
-6:39
+## Node.js_Chapter3_Destructuring
 
-40. Node.js_Chapter3_Generator 개념적 접근
-8:46
+## Node.js_Chapter3_Generator 개념적 접근
 
-41. Node.js_Chapter3_Generator 심화 (재촬영)
-1:55
+## Node.js_Chapter3_Generator 심화 (재촬영)
 
-42. Node.js_Chapter3_Timers
-13:07
+## Node.js_Chapter3_Timers
 
-43. Node.js_Chapter3_Event Emitter
-8:30
+## Node.js_Chapter3_Event Emitter
 
-44. Node.js_Chapter3_DNS
-10:01
+## Node.js_Chapter3_DNS
 
-45. Node.js_Chapter3_file system (1)
-11:10
+## Node.js_Chapter3_file system (1)
 
-46. Node.js_Chapter3_file system (2)
-15:12
+## Node.js_Chapter3_file system (2)
 
-47. Node.js_Chapter3_Promise.All
-7:07
+## Node.js_Chapter3_Promise.All
 
-48. Node.js_Chapter3_Promise.race
-6:24
+## Node.js_Chapter3_Promise.race
+
+---
+
 
 49. Node.js_Chapter4_http
-8:02
 
 50. Node.js_Chapter4_https
-13:02
 
 51. Node.js_Chapter4_Class vs Prototype (1)
-9:56
 
 52. Node.js_Chapter4_Class vs Prototype (2)
-11:48
 
 53. Node.js_Chapter4_Node.js TDD 프레임워크 소개
-14:28
 
 54. Node.js_Chapter4_Memory Leaks 개념적 접근
-12:21
 
 55. Node.js_Chapter4_Node.js core repo로 살펴보는 TDD 실무
-12:30
 
 56. Node.js_Chapter4_Node.js Design Patterns (1)
-9:53
 
 57. Node.js_Chapter4_Node.js Design Patterns (2)
-9:26
 
 58. Node.js_Chapter4_Node.js Design Patterns (3)
-7:36
 
 59. Node.js_Chapter4_Node.js Design Patterns (4)
-8:07
 
 60. Node.js_Chapter4_Node.js Design Patterns (5) (추가촬영)
-2:39
 
 61. Node.js_Chapter4_Node.js Design Patterns (6) (추가촬영)
-3:03
 
 62. Node.js_Chapter4_Node.js Design Patterns (7) (추가촬영)
-3:15
 
 63. Node.js_Chapter4_Node.js Design Patterns (8) (추가촬영)
-1:39
 
 64. Node.js_Chapter4_비동기 패턴(1)
-14:49
 
 65. Node.js_Chapter4_비동기 패턴(2)
-17:25
 
 66. Node.js_Chapter4_비동기 패턴(3)
-11:32
 
 67. Node.js_Chapter4_비동기 패턴(4) (재촬영)
-2:16
+
+---
 
 68. Node.js_Chapter5_Race Conditions (1)
-13:08
 
 69. Node.js_Chapter5_Race Conditions (2)
-11:06
 
 70. Node.js_Chapter5_Race Conditions (3)
-13:42
 
 71. Node.js_Chapter5_Race Conditions 연습문제
-5:25
 
 72. Node.js_Chapter5_Race Conditions 연습문제 해설
-13:57
+
+---
 
 73. Node.js_Chapter6_CPU Profiling에 대한 이해
-8:47
 
 74. Node.js_Chapter6_CPU Profiling 분석 기법
-14:50
 
 75. Node.js_Chapter6_CPU Profiling 분석 실무 프로젝트
-5:46
 
 76. Node.js_Chapter6_Heap Snapshot에 대한 이해
-8:09
 
 77. Node.js_Chapter6_Node.js Heap Snpashot 분석 프로젝트 (1)
-5:16
 
 78. Node.js_Chapter6_Node.js Heap Snpashot 분석 프로젝트 (2)
-5:55
