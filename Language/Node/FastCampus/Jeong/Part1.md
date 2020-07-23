@@ -477,13 +477,48 @@ setInterval(() => {
 
 ## Node.js_Chapter3_Error handling (재촬영)
 
+```js
+try{
+    a
+}catch(e){
+    console.log(e)
+}
+```
+
+try를 실행시켰을 때, 에러가 난다면 확인할 수가 있다.
 
 ## Node.js_Chapter3_Error handling 연습문제 (재촬영)
 
+에러가 발생하지 않고 제대로 찍히게 하는 문제 
 
 ## Node.js_Chapter3_Error handling 연습문제 해설 (재촬영)
 
+```js
+try{
+    a
+}catch(e){
+    console.log(e)
+}
+console.log(a)
+```
+
+에러를 잡고 넘어가기 때문에 제대로 실행되는 것을 볼 수 있다. 
+
 ## Node.js_Chapter3_Arrow Functions
+
+함수형 프로그래밍에 다가가고, 가독성이 좋아진다. 
+
+```js
+function add(var1, var2){
+    return var1 + var2
+}
+
+const add = (var1, var2) => var1 + var2
+```
+
+위와 같이 평소처럼 함수를 선언해서 사용하는 것이 아닌
+
+arrow function을 사용해서, 좀 더 간단하고 직관적으로 표현이 가능하다. 
 
 ## Node.js_Chapter3_Arrow Functions 연습문제
 
