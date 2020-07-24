@@ -524,7 +524,33 @@ arrow function을 사용해서, 좀 더 간단하고 직관적으로 표현이 �
 
 ## Node.js_Chapter3_Arrow Functions 연습문제 해설
 
+```js
+'use strict'
+
+//curried function(합성함수) - 두 가지 함수를 하나의 함수처럼 모아서 사용하는 것 
+// const getDiscount = (price, rate) => price*rate
+const getDiscount = price => rate => price*rate
+
+// 위의 함수는 아래와 같다.
+
+var getDiscount = function getDiscount(rate){
+    return function(price){
+        return rate * price
+    }
+}
+
+getDiscount(10000, 0.1) // 위의 함수 실행
+getDiscount(10000)(0.1) // 아래 함수 실행
+
+const getTenPercentOff = getDiscount(0.1)
+getTenPercentOff(10000) // 이 부분을 고객들에 대해서 모두 따로 적용한다면 편리하게 코드 작성이 가능하다, 재사용도 가능 
+```
+
+내부 closure 함수를 반환해서 사용하는 것. 
+
 ## Node.js_Chapter3_Class (1) (기존영상)
+
+JS는 객체지향의 언어이기도 하다 -> 함수형 프로그래밍의 방식으로도 할 수 있다. 그리고 기본적으로 prototype 기반의 언어라서 언어의 자유도가 높다. 
 
 ## Node.js_Chapter3_Class Extends (기존영상)
 
