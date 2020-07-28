@@ -554,31 +554,356 @@ JS는 객체지향의 언어이기도 하다 -> 함수형 프로그래밍의 방
 
 ## Node.js_Chapter3_Class Extends (기존영상)
 
+```js
+// cache.js
+'use strict'
+
+class cacheManager{
+    constructor(){
+        this.config = []
+    }
+
+    addConfig(obj = {}){
+        this.config.push(obj)
+    }
+
+    getConfig(){
+        return this.config
+    }   
+}
+
+module.exports = cacheManager
+```
+
+
+```js
+// session.js
+'use strict'
+
+const cacheManager = require('./cache')
+
+class sessionManager extends cacheManager{
+
+}
+
+const SessionManager = new sessionManager()
+SessionManager.addConfig({
+    token : 'ran'
+})
+
+const config = SessionManager.getConfig()
+console.log(config)
+```
+
+클래스를 확장해서 session에서 cache의 클래스의 함수를 사용할 수 있게 해주었다.
+
+좀 더 객체지향적인 방법에 가깝게 활용할 수 있다. 
+
 ## Node.js_Chapter3_Class (1) (추가촬영)
 
+```js
+class Robot{
+    constructor(name){
+        this.name = name
+    }
+
+    speak(){
+        console.log(`${this.name}`)
+    }
+}
+const r = new Robot("이름")
+
+r.speak()
+```
+
+이름이 출력되는 것을 확인할 수 있다. 
 ## Node.js_Chapter3_Class (2) (추가촬영)
+
+```js
+class Ai extends Robot{
+    constructor(name){
+        super(name)
+    }
+
+    walk(){
+        console.log(`walk : ${this.name}`)
+    }
+}
+
+const a = new Ai("다른이름")
+a.walk()
+```
+
+Ai는 Robot의 speak도 사용할 수 있고, 따로 정의한 walk도 사용할 수 있다.
+
+또한 constructor 상위 것을 받음으로써 name도 사용이 가능하다.
 
 ## Node.js_Chapter3_Static method
 
+스테틱 메소드는 클래스를 생성하지 않고 사용이 가능하다. 
+
+```js
+class test{
+    static call(){
+        console.log('static method')
+    }
+}
+
+test.call();
+```
+
+바로 클래스 객체를 생성하지 않고 사용이 가능하다.
+
 ## Node.js_Chapter3_Destructuring
+
+비 구조화
+
+```js
+const obj ={
+    title : 'node.js',
+    value : '올인원 패키지'
+}
+
+arr = [0,1,2]
+
+const {title, value} = obj
+const [, a, b] = arr
+```
+
+위와 같이 구조화된 객체를 분해해서 넣을 수가 있다. 
+
+title 상수에는 'node.js'가 그리고 value에는 '올인원 패키지'가 들어가게 된다.
+
+또한 arr의 길이가 3이기 때문에
+
+a,b에 각각 1,2를 넣기 위해서 [, a, b]로 넣어줌으로써 원하는 값을 넣을 수 있게 하였다. 
+
 
 ## Node.js_Chapter3_Generator 개념적 접근
 
+async와 await의 등장으로 사용이 줄어들었지만, 아직도 사용되는 개념이다
+
+react에서 side effect를 줄일 수 있다. 
+
+
+```js
+//yield : 해당하는 조건이 변화할때 마다 실행이 된다. 
+
+// generator는 화살표함수를 사용하면 안되고, 명시적으로 선언해주고 *를 붙여준다.
+
+function* log(){
+    console.log(0, yield)
+    console.log(1, yield)
+    console.log(2, yield)
+}
+
+const gen = log()
+
+gen.next('zero')
+gen.next('first')
+gen.next('second')
+```
 ## Node.js_Chapter3_Generator 심화 (재촬영)
+
+```js
+const obj ={
+    *gen() {
+        let cnt = 0;
+        yield ++cnt;
+        yield ++cnt;
+        yield ++cnt;
+    }
+}
+
+const g = obj.gen()
+console.log(g.next())
+console.log(g.next())
+console.log(g.next())
+```
+
+```
+{ value: 1, done: false }
+{ value: 2, done: false }
+{ value: 3, done: false }
+```
+
+위와 같이 결과물이 0부터 시작해서 증가하는 것을 알 수 있다. 
 
 ## Node.js_Chapter3_Timers
 
+외부의 환경적인 요소에 의해서 setTimeout의 실행의 딜레이가 있을 수 있다.
+
+```js
+const timeoutObj = setTimeout(() =>{
+    console.log('first')
+}, 1000) // 이 1초는, 최소 지연시간으로 더 늦춰질 수도 있다. 
+
+const immediateObj = setImmediate(() => {
+    console.log('second')
+}) 
+
+const intervalObj = setInterval(() => {
+    console.log('third')
+}, 1000) // 1초 간격으로 다음 함수를 실행시켜준다. 
+
+// 각 객체의 종료 함수는 다르다. 
+clearTimeout(timeoutObj)
+clearImmediate(immediateObj)
+clearInterval(intervalObj)
+
+```
+
+setTimeout을 0초로 준다면 immediate랑 똑같이 작동하는가 ? 
+
+- 코드상에서 확인할 수 없는, cpu 점유율 등의 외부 조건을 통해서 어떤게 먼저 실행될지는 알 수 없다. 
+- first, second가 실행시마다 순서가 다르게 나온다. 
+
 ## Node.js_Chapter3_Event Emitter
+
+```js
+'use strict'
+
+// Event emitter - 기본 모듈
+
+const EventEmitter = require('events')
+
+class ChatManager extends EventEmitter{
+
+}
+
+const chatManager = new ChatManager()
+
+chatManager.on("join", () =>{
+    console.log("new user joined")
+})
+
+chatManager.emit("join") // join 을 실행시켜줌으로써 new user joined가 출력되는 것을 알 수 있다. 
+```
+
 
 ## Node.js_Chapter3_DNS
 
+```js
+const dns = require('dns')
+
+dns.lookup("test.com", (err, address, family) => {
+    console.log(`address: ${address}, ${family}`)
+})
+```
+
+```
+address: 69.172.200.235, 4
+```
+
+family가 4라는건 IPv4를 사용한다는 것을 의미한다.
+
+```js
+dns.resolve4('archive.org', (err, addresses) => {
+    if(err)throw err
+
+    const res = JSON.stringify(addresses)
+    console.log("res : " + res)
+
+    addresses.forEach(a => {
+        dns.reverse(a, (err, hostnames) => {
+            if(err) throw err
+
+            console.log(`reverse for ${a}; ${JSON.stringify(hostnames)}`)
+        })
+    })
+})
+```
+
+여러개의 에러 케치문을 통해서 어디서 에러가 나는지를 확인할 수 있다.
+
 ## Node.js_Chapter3_file system (1)
+
+```js
+const fs = require('fs')
+
+fs.readFile('test.txt', 'utf-8', (err, data) =>{
+    if(err){
+        console.error(err)
+        return
+    } 
+
+    console.log(data)
+})
+
+const content = 'something to write'
+fs.writeFile('test.txt', content, err =>{
+    if(err){
+        console.error(err)
+        return
+    }else{
+        console.log('success')
+    }
+})
+```
 
 ## Node.js_Chapter3_file system (2)
 
+```js
+'use strict'
+
+const fs = require('fs')
+const { promisify } = require('util') // 객체처럼 보이지만, 비 구조화를 사용하는 것
+// const promisify  = require('util').promisify  // 랑 같은 것 
+
+const read = promisify(fs.readFile) // 콜백함수가 promise로 바뀌는 것 
+const write = promisify(fs.writeFile)
+
+const writeAndRead = async(data = '') => {
+    try{
+        await write('test.txt', data) // promise로 변경했기 때문에, await를 사용할 수 있다는 점. 
+        return (await read('test.txt'))
+    }catch(e){
+        // try 구문 안에 error가 있다면 이부분으로 넘어오게 된다. 
+        console.error(e)
+    }
+}
+
+writeAndRead('something to write')
+```
+
+콜백으로 이루었던 것을 더 간단하게 promise를 사용해서 만들었다. 
+
 ## Node.js_Chapter3_Promise.All
 
+```js
+'use strict'
+
+// promise는 async, await의 근본이된다. 
+// promise.all은 실무에서도 빈번하게 사용되는 중요한 방법
+const promise1 = new Promise((resolve, reject) => resolve('즉시 호출 된 함수'))
+const promise2 = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        resolve('3초 뒤에 호출')
+    }, 3000);
+})
+
+Promise.all([promise1, promise2]).then(values => console.log(values))
+```
+
 ## Node.js_Chapter3_Promise.race
+
+가장 먼저 resolve된 promise가 return되는, 마치 race를 하듯이 끝나는 방식 
+
+```js
+'use strict'
+
+const promise1 = new Promise((resolve, reject) =>{
+    setTimeout(() => resolve(2000), 2000)
+})
+
+const promise2 = new Promise((resolve, reject) =>{
+    setTimeout(() => resolve('즉시'), 0)
+})
+Promise.race([promise1, promise2]).then(value => console.log(value))
+```
+
+결과로는 먼저 끝나는 promise2의 resolve 값인 '즉시'가 리턴되어서 출력되는 것을 알 수 있다. 
+
 
 ---
 
