@@ -908,66 +908,800 @@ Promise.race([promise1, promise2]).then(value => console.log(value))
 ---
 
 
-49. Node.js_Chapter4_http
+## Node.js_Chapter4_http
 
-50. Node.js_Chapter4_https
+http 모듈 이해없이 express 같은 모듈을 사용하면, 실제로 서버를 운영할 때 low level의 단계에서 어떻게 작동하는지 알 수 없다. (문제가 생기더라도 알 수가 없다)
 
-51. Node.js_Chapter4_Class vs Prototype (1)
 
-52. Node.js_Chapter4_Class vs Prototype (2)
+```js
+'use strict'
 
-53. Node.js_Chapter4_Node.js TDD 프레임워크 소개
+const http = require('http')
 
-54. Node.js_Chapter4_Memory Leaks 개념적 접근
+const server = http.createServer((req, res)=>{
+    res.statusCode = 200
+    res.setHeader('Content-Type', 'text/html')
+    res.end('<div>Hello World</div>')
+})
 
-55. Node.js_Chapter4_Node.js core repo로 살펴보는 TDD 실무
+const port = process.env.PORT; // 외부 환경변수로 선언해서 가져오는 것이 일반적이다. 
+server.listen(port, ()=>{
+    console.log(`Server running at port ${port}`)
+})
+```
 
-56. Node.js_Chapter4_Node.js Design Patterns (1)
 
-57. Node.js_Chapter4_Node.js Design Patterns (2)
+## Node.js_Chapter4_https
 
-58. Node.js_Chapter4_Node.js Design Patterns (3)
+hypertext protocol secure (SSL 보안 프로토콜을 사용한다)
 
-59. Node.js_Chapter4_Node.js Design Patterns (4)
+- 모든 과정중에 SSL 프로토콜이 사용되어서, 데이터 처리과정이 암호화되서 안전하게 전송된다.
+- http 모듈과 크게 다르지 않다
 
-60. Node.js_Chapter4_Node.js Design Patterns (5) (추가촬영)
+```js
+'use strict'
 
-61. Node.js_Chapter4_Node.js Design Patterns (6) (추가촬영)
+const https = require('https')
+const options = {
+    hostname: 'google.com',
+    port : 443, // 기본적인 https 포트는 443이다. 
+    path : '/login',
+    method : 'GET' // CREATE(POST) READ(GET) UPDATE(PUT) DELETE - CRUD
+} 
 
-62. Node.js_Chapter4_Node.js Design Patterns (7) (추가촬영)
+const req = https.request(options, res =>{
+    console.log(`statusCode : ${res.statusCode}`)
 
-63. Node.js_Chapter4_Node.js Design Patterns (8) (추가촬영)
+    res.on('data', d =>{
+        process.stdout.write(e)
+    })
 
-64. Node.js_Chapter4_비동기 패턴(1)
+    req.on('error', e =>{
+        console.log(e)
+    })
+})
 
-65. Node.js_Chapter4_비동기 패턴(2)
+req.end() // request가 끝나면 end로 명시적으로 끝내주어야 한다. 
+```
 
-66. Node.js_Chapter4_비동기 패턴(3)
+## Node.js_Chapter4_Class vs Prototype (1)
 
-67. Node.js_Chapter4_비동기 패턴(4) (재촬영)
+왜 더이상 Prototype이 아닌 class로 넘어가는 지 알아보도록 한다.
+
+```js
+'use strict'
+
+
+
+function fullstack(backend, frontend){
+    this.backend = backend
+    this.frontend = frontend
+
+    fullstack.prototype.getBackend = () => this.backend
+    fullstack.prototype.setBackend = () => this.backend = backend
+
+    fullstack.prototype.getFrontend = () => this.frontend
+    fullstack.prototype.setFrontend = () => this.frontend = frontend
+} //  프로토타입으로 내부 클로져 함수를 선언한 것 - 함수내부에서 함수 외부에 접근할 수 있는 것 
+// error 함수의 this는 글로벌 객체의 this이기 때문에 이 점을 기억할 것 
+
+const Fullstack = new fullstack('javascript', 'javascript')
+Fullstack.getBackend()
+fullstack.getFrontend()
+
+
+```
+
+## Node.js_Chapter4_Class vs Prototype (2)
+
+프로토타입을 클래스 타입으로 리팩토링
+
+```js
+'use strict'
+
+
+
+class fullstack{
+    constructor(backend, frontend){
+        this.backend = backend
+        this.frontend = frontend
+    }
+
+    getBackend(){
+        return this.backend
+    }
+
+    getFrontend(){
+        return this.frontend
+    }
+
+    setBackend(backend){
+        this.backend = backend
+    }
+
+    setFrontend(frontend){
+        this.frontend = frontend
+    }
+}
+
+const Fullstack = new fullstack('javascript', 'javascript')
+Fullstack.getBackend()
+Fullstack.getFrontend()
+```
+
+기능적으로도, 내부적으로 동작하는 것도 차이가 없다. 이렇게 방식을 바꾸는 것이 리펙토링
+
+퍼포먼스 향상과 모듈화 그리고 유지보수성 개선을 위해서 리펙토링 과정을 진행했다. 
+
+내부적으로 closure를 갖는 것보다 실제로 선언해서 갖고 있는 것이 더 직관적이다. 
+
+## Node.js_Chapter4_Node.js TDD 프레임워크 소개
+
+
+TDD 프레임워크 
+
+
+MOCHA 노드 뿐만 아니라 프론트엔드에서도 사용할 수 있다. 
+
+JEST - MOCK 개념을 활용한, 테스트를 위한 프레임워크 
+
+Cypress - 코드로써 자동화해서 UI 테스트를 진행할 수 있다.
+
+
+## Node.js_Chapter4_Memory Leaks 개념적 접근
+
+메모리 누수
+
+```js
+'use strict'
+
+function study(value1, value2){
+    this.value1 = value1
+    this.value2 = value2
+
+    
+    // this.prototype.func1 을 하지 않고 바로 함수를 정의하는 사람이 있다.
+    this.func1 = () =>{
+        // 함수 내이밍 없이 arrow function을 하면, 
+        // arrow function으로 했기 때문에, 상위 객체에 접근해서 글로벌 this의
+        // value1과 value2를 사용할 수 있다. 
+        console.log()
+    }  
+}
+
+const problem = new study(undefined, undefined)
+problem.func1() 
+// func1을 속성으로 갖고 있는 것은 괜찮다. - js에서 함수는 최상위 객체로 정의된다. 
+// 여기서 problem.func1()을 로그로 찍어보면, 문제는 없다. 
+// 초기화 할당이 된 후에, 할당 해제 과정이 없다면 이 function이 메모리에 계속 남아있고 계속해서 사용할 수록 누적된다. 
+```
+
+arrow 함수를 사용하지 않는다면, this라는 상위 객체에 접근할 수 없을 뿐더러 
+
+## Node.js_Chapter4_Node.js core repo로 살펴보는 TDD 실무
+
+node같은 대규모 오픈 소스에 대해서는 지금까지 개발한 것이 문제 없이 동작하는 것이 중요하다.
+
+수정하고 개선하는 것도 중요하지만, 그 전의 기능들의 동작을 보장해야 한다.
+
+다양한 사람들이 협업하다보니, TDD는 필수적이다. 
+
+## Node.js_Chapter4_Node.js Design Patterns (1)
+
+Functional Programming
+
+```js
+'use strict'
+
+const numbers = [10,20,30,40]
+
+const sum = numbers.reduce((total, value) => total + value)
+
+console.log(sum);
+```
+
+결과는 total 값에 for문을 돌린 것처럼, 다 더해서 100이 나오게 된다. 
+
+단순히 코드를 한 줄로 나타낼 수 있다는 점 말고도 다양한 기능을 통해서 reduce를 잘 활용할 수 있다. 
+
+```js
+'use strict'
+
+const numbers = [10,20,30,40]
+
+const avg = numbers.reduce((total, value, idx, arr) => {
+  total += value
+  if(idx === arr.length-1){
+      return total/arr.length
+  }else{
+      return total
+  }
+})
+
+console.log(avg);
+```
+
+위와 같이 평균 값을 구하는 것을 하도록하면 간단하게 함수형 프로그래밍 식으로 만들 수 있다. 
+
+## Node.js_Chapter4_Node.js Design Patterns (2)
+
+reduce가 현업에서 활용도가 높고, 복잡한 것을 깔끔하게 하는 Design pattern의 기초가 된다. 
+
+```js
+'use strict'
+
+const numbers = [0,1,2,3,4,5,6]
+
+const res = numbers.reduce((total, amount) =>{
+    if(amount > 0)total.push(amount)
+    return total
+}, []) // [] 배열 값으로 total을 초기화(initial value)로 함으로써 push를 쓸수가 있다.
+
+console.log(res);
+```
+
+원래 사용하려면, for문을 사용해서 해당 배열을 검색해서 0보다 큰 값들을 배열에 넣었을 것이다. 
+
+reduce를 사용함으로써 여러번 수행해야하는 로직을 한 번에 끝낼 수 있는 장점을 가지고 있다. 
+
+## Node.js_Chapter4_Node.js Design Patterns (3)
+
+
+```js
+'use strict'
+
+const arr = ['pdf', 'html', 'html', 'gif', 'gif', 'gif']
+
+const obj = {
+
+}
+// obj['name']  ==> undefined 
+
+const res = arr.reduce((cnt, fileType) =>{
+    cnt[fileType] = (cnt[fileType] || 0) + 1
+    return cnt
+}, {})
+
+console.log(res);
+```
+
+```
+{ pdf: 1, html: 2, gif: 3 }
+```
+
+위의 결과가 리턴되게 된다. 
+
+위의 cnt[fileType]은 오브젝트의 요소에 접근하는 방식이고
+
+아무것도 존재하지 않는다면, 값이 0이 되는 것이 아니라 'undefined'가 되게 되는 것. 
+
+## Node.js_Chapter4_Node.js Design Patterns (4)
+
+
+불필요한 overhead, operation이 발생되지 않게, 
+
+최초 한 번만 생성됨을 보장하는 패턴이 singleton 패턴이다. -- 환경설정, 캐시관리 등 사용된다. 
+
+```js
+'use strict'
+
+class CacheManager{
+    constructor(){
+        if(!CacheManager.instance){
+            this._cache = []
+            CacheManager.instance = this
+        }
+        
+        return CacheManager.instance
+    }
+}
+
+const instance = new CacheManager()
+Object.freeze(instance) // 단일 최초에 한 번만 생성이 되는 객체, 싱글톤 패턴
+```
+
+## Node.js_Chapter4_Node.js Design Patterns (5) (추가촬영)
+
+Adapter pattern 
+
+호환성이 없는 interface 때문에, 함께 작동할 수 있도록 도와주는 패턴이다. 
+
+```js
+/*
+Lion interface :
+
+roar()
+*/
+
+class AfricanLion  {
+    roar() {}
+}
+
+class AsianLion  {
+    roar() {}
+}
+```
+
+```js
+class Hunter {
+    hunt(lion) {
+        // ... some code before
+        lion.roar()
+        //... some code after
+    }
+}
+```
+
+
+```js
+// This needs to be added to the game
+class WildDog {
+    bark() {
+    }
+}
+
+// Adapter around wild dog to make it compatible with our game
+class WildDogAdapter {
+
+    constructor(dog) {
+        this.dog = dog;
+    }
+    
+    roar() {
+        this.dog.bark();
+    }
+}
+```
+
+wildDog는 다른 인터페이스 - bark를 사용하기 떄문에 hunt를 사용할 수 없다. 
+
+그렇기 때문에 adapter 클래스를 사용해서 호환이 되게 만들어야 한다. 
+
+```js
+wildDog = new WildDog()
+wildDogAdapter = new WildDogAdapter(wildDog)
+
+hunter = new Hunter()
+hunter.hunt(wildDogAdapter)
+```
+
+어뎁터 클래스를 도입하여, Hunter 클래스를 생성하여도 wildDogAdapter를 통해서 roar를 사용할 수 있게 만들어준다. 
+
+
+## Node.js_Chapter4_Node.js Design Patterns (6) (추가촬영)
+
+Bridge pattern
+
+![](https://cloud.githubusercontent.com/assets/11269635/23065293/33b7aea0-f515-11e6-983f-98823c9845ee.png)
+
+브릿지 패턴은 그림에 보듯이, 상속보다는 각 기능들을 분리를 해서 구성하는 것을 선호하는 패턴이다. 
+
+```js
+/*
+Webpage interface :
+
+constructor(theme)
+getContent()
+*/
+
+class About{ 
+    constructor(theme) {
+        this.theme = theme
+    }
+    
+    getContent() {
+        return "About page in " + this.theme.getColor()
+    }
+}
+
+class Careers{
+   constructor(theme) {
+       this.theme = theme
+   }
+   
+   getContent() {
+       return "Careers page in " + this.theme.getColor()
+   } 
+}
+```
+
+```js
+/*
+Theme interface :
+
+getColor()
+*/
+
+class DarkTheme{
+    getColor() {
+        return 'Dark Black'
+    }
+}
+class LightTheme{
+    getColor() {
+        return 'Off white'
+    }
+}
+class AquaTheme{
+    getColor() {
+        return 'Light blue'
+    }
+}
+```
+
+2개의 웹 페이지와 3개의 Theme을 통해서 
+
+웹페이지가 constructor에 Theme을 받음으로써, 상속이 아닌 구성을 선택해서 간단하게 나타낼 수 있다.
+
+브릿지 패턴을 사용을 안하면, 상속을 받은 클래스들이 합쳐서 6개가 되지만, 굳이 모든 것을 코드로 작성할 필요가 없어졌다. 
+
+```js
+const darkTheme = new DarkTheme()
+
+const about = new About(darkTheme)
+const careers = new Careers(darkTheme)
+
+console.log(about.getContent() )// "About page in Dark Black"
+console.log(careers.getContent() )// "Careers page in Dark Black"
+```
+
+## Node.js_Chapter4_Node.js Design Patterns (7) (추가촬영)
+
+Decorator pattern
+
+```js
+/*
+Coffee interface:
+getCost()
+getDescription()
+*/
+
+class SimpleCoffee{
+
+    getCost() {
+        return 10
+    }
+
+    getDescription() {
+        return 'Simple coffee'
+    }
+}
+```
+
+필요한 경우 코드를 수정할 수 있도록 
+
+코드를 확장 가능하도록 만들고 싶다.
+
+즉, 추가 기능(디코더)를 만드는 것이다.
+
+```js
+class MilkCoffee {
+
+
+    constructor(coffee) {
+        this.coffee = coffee
+    }
+
+    getCost() {
+        return this.coffee.getCost() + 2
+    }
+
+    getDescription() {
+        return this.coffee.getDescription() + ', milk'
+    }
+}
+
+class WhipCoffee {
+
+    constructor(coffee) {
+        this.coffee = coffee
+    }
+
+    getCost() {
+        return this.coffee.getCost() + 5
+    }
+
+    getDescription() {
+        return this.coffee.getDescription() + ', whip'
+    }
+}
+
+class VanillaCoffee {
+
+    constructor(coffee) {
+        this.coffee = coffee
+    }
+
+    getCost() {
+        return this.coffee.getCost() + 3
+    }
+
+    getDescription() {
+        return this.coffee.getDescription() + ', vanilla'
+    }
+}
+```
+
+
+```js
+let someCoffee
+
+someCoffee = new SimpleCoffee()
+console.log(someCoffee.getCost())// 10
+console.log(someCoffee.getDescription())// Simple Coffee
+
+someCoffee = new MilkCoffee(someCoffee)
+console.log(someCoffee.getCost())// 12
+console.log(someCoffee.getDescription())// Simple Coffee, milk
+
+someCoffee = new WhipCoffee(someCoffee)
+console.log(someCoffee.getCost())// 17
+console.log(someCoffee.getDescription())// Simple Coffee, milk, whip
+
+someCoffee = new VanillaCoffee(someCoffee)
+console.log(someCoffee.getCost())// 20
+console.log(someCoffee.getDescription())// Simple Coffee, milk, whip, vanilla
+```
+
+상속을 이용한 데코레이터 패턴인 것 같다. 
+
+
+`어떤 객체에 데코레이터 클래스의 객체로 감싸서 그 객체의 행동을 역동적으로 변화시킬 수 있게 해준다.`
+
+
+
+## Node.js_Chapter4_Node.js Design Patterns (8) (추가촬영)
+
+Composite pattern
+
+```js
+/*
+Employee interface :
+
+constructor(name, salary)
+getName()
+setSalary()
+getSalary()
+getRoles()
+*/
+
+class Developer {
+
+    constructor(name, salary) {
+        this.name = name
+        this.salary = salary
+    }
+
+    getName() {
+        return this.name
+    }
+
+    setSalary(salary) {
+        this.salary = salary
+    }
+
+    getSalary() {
+        return this.salary
+    }
+
+    getRoles() {
+        return this.roles
+    }
+
+    develop() {
+        /* */
+    }
+}
+
+class Designer {
+
+    constructor(name, salary) {
+        this.name = name
+        this.salary = salary
+    }
+
+    getName() {
+        return this.name
+    }
+
+    setSalary(salary) {
+        this.salary = salary
+    }
+
+    getSalary() {
+        return this.salary
+    }
+
+    getRoles() {
+        return this.roles
+    }
+
+    design() {
+        /* */
+    }
+}
+```
+
+```js
+class Organization {
+    constructor(){
+        this.employees = []
+    }
+
+    addEmployee(employee) {
+        this.employees.push(employee)
+    }
+
+    getNetSalaries() {
+        let netSalary = 0
+
+        this.employees.forEach(employee => {
+            netSalary += employee.getSalary()
+        })
+
+        return netSalary
+    }
+}
+```
+
+Organization에서 다른 타입의 employee들로 이루어진 객체를 구성할 수 있게 된다.
+
+```js
+// Prepare the employees
+const john = new Developer('John Doe', 12000)
+const jane = new Designer('Jane', 10000)
+
+// Add them to organization
+const organization = new Organization()
+organization.addEmployee(john)
+organization.addEmployee(jane)
+
+console.log("Net salaries: " , organization.getNetSalaries()) // Net Salaries: 22000
+```
+
+위와 같이 organization에 다른 타입의 객체들을 엮어서 사용할 수 있게 되는 것. 
+
+## Node.js_Chapter4_비동기 패턴(1)
+
+클래스 내부에, Constructor에서 비동기적인 await를 사용할 수 없기 때문에, 아래와 같은 방법을 사용한다. 
+
+```js
+class Sample{
+    *gen(){
+        let cnt = 0
+        yield ++cnt
+    }
+}
+const fn = new Sample()
+const gn = fn.gen()
+
+console.log(gn.next())
+console.log(gn.next())
+```
+
+```js
+class Sample{
+    *[Symbol.iterator](){
+        let cnt = 0
+        yield cnt++
+    }
+}
+console.log(Array.from(Sample));
+
+
+```
+
+## Node.js_Chapter4_비동기 패턴(2)
+
+static factory method 패턴 사용하기 위한 선행학습
+
+```js
+class DatabaseManager{
+    async init(){ 
+        // 최초 1회만 실행되는 것을 보장한다. -- Promise cache 개념
+        
+    }
+}
+```
+
+즉, 아래에서 다음과 같이 init()을 여러번 해주어도 메모리 누수가 없다는 것. 
+
+```js
+async newMember(){
+    await this.init()
+}
+
+async deleteMember(){
+    await this.init()
+}
+```
+
+
+## Node.js_Chapter4_비동기 패턴(3)
+
+static factory method 의 포인트는 constructor의 생성자로써의 기능을 포기하는 것
+
+static method를 이용해서 생성자의 역할을 하게 하는 것. -- factory에서 build하는 것. 
+
+```js
+'use strict'
+
+class DatabaseManager{
+    
+    static async BUILD(settings){
+        const config = await this.init(settings)
+        //// 수행하고자 하는 모든 비동기 작업을 수행 
+        // return new DatabaseManager([Promise]) // 비동기 작업의 결과를 리턴
+        return new DatabaseManager(config)
+    }
+
+    query(){
+        // QUERY('') Agnostic
+    }
+
+    async init(){ 
+        // 최초 1회만 실행되는 것을 보장한다. -- Promise cache 개념
+        // 즉, 
+
+    }
+
+    async newMember(){
+       
+    }
+
+    async deleteMember(){
+
+    }
+}
+```
+
+Build를 이용해서 constructor의 역할을 한다. 
+- 생성자에서 await를 할 수 없기 때문에 할 수 있는 static method를 만들어서 사용하는 것
+
+## Node.js_Chapter4_비동기 패턴(4) (재촬영)
+
+```js
+'use strict'
+
+const co = require('co')
+
+co(function*(){
+    const a = Promise.resolve(1)
+
+    const b = Promise.resolve(2)
+
+    const c = Promise.resolve(3)
+
+    const res = yield[a,b,c]
+    console.log(res)
+})
+```
+
+resolve 되는 결과들이 차례대로 나오게 된다. 
+
 
 ---
 
-68. Node.js_Chapter5_Race Conditions (1)
+## Node.js_Chapter5_Race Conditions (1)
 
-69. Node.js_Chapter5_Race Conditions (2)
+## Node.js_Chapter5_Race Conditions (2)
 
-70. Node.js_Chapter5_Race Conditions (3)
+## Node.js_Chapter5_Race Conditions (3)
 
-71. Node.js_Chapter5_Race Conditions 연습문제
+## Node.js_Chapter5_Race Conditions 연습문제
 
-72. Node.js_Chapter5_Race Conditions 연습문제 해설
+## Node.js_Chapter5_Race Conditions 연습문제 해설
 
 ---
 
-73. Node.js_Chapter6_CPU Profiling에 대한 이해
+## Node.js_Chapter6_CPU Profiling에 대한 이해
 
-74. Node.js_Chapter6_CPU Profiling 분석 기법
+## Node.js_Chapter6_CPU Profiling 분석 기법
 
-75. Node.js_Chapter6_CPU Profiling 분석 실무 프로젝트
+## Node.js_Chapter6_CPU Profiling 분석 실무 프로젝트
 
-76. Node.js_Chapter6_Heap Snapshot에 대한 이해
+## Node.js_Chapter6_Heap Snapshot에 대한 이해
 
-77. Node.js_Chapter6_Node.js Heap Snpashot 분석 프로젝트 (1)
+## Node.js_Chapter6_Node.js Heap Snpashot 분석 프로젝트 (1)
 
-78. Node.js_Chapter6_Node.js Heap Snpashot 분석 프로젝트 (2)
+## Node.js_Chapter6_Node.js Heap Snpashot 분석 프로젝트 (2)
