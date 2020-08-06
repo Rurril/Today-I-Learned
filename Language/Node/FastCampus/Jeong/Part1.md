@@ -1686,11 +1686,162 @@ resolve 되는 결과들이 차례대로 나오게 된다.
 
 ## Node.js_Chapter5_Race Conditions (2)
 
+```js
+'use strict'
+
+let total = 0
+async function getTotal(){
+    return total
+}
+
+async function setTotal(value){
+    return total = value
+}
+
+async function increment(value, increment){
+    return value + increment
+}
+
+async function add(){
+    let current, newValue
+    current = await getTotal()
+    newValue = await increment(current, 20)
+    await setTotal(newValue)
+}
+
+async function main(){
+    
+    const transaction1 = add() // 아직 정의하지 않았지만 hoisting 특성으로 괜찮다. 
+    const transaction2 = add()
+    
+    await transaction1
+    await transaction2 // 두 개의 트랜젝션이 경쟁상태에 있다.
+    console.log(await getTotal());
+}
+
+main()
+```
+
+두개의 트렌젝션이 선행조건이 없기 때문에 컴퓨터 자원의 상태에 따라서 결과가 다르게 나오게 된다.
+
+예상 값은 40이지만, 나의 경우에는 20만 출력되었다. 
+
 ## Node.js_Chapter5_Race Conditions (3)
+
+```js
+class Lock{
+    constructor(){
+        // _ 는 내부에서 사용하는 변수이기에 사용하는 coding convention 관습이다. 
+        this._locked = false
+        this._waiting = [] // 메시지 큐 등, 대기열이 존재한다는 것  
+    }
+
+    lock(){
+        const unlock = () =>{
+            let nextResolve
+            if(this._waiting.length > 0){
+                nextResolve = this._waiting.pop()
+                nextResolve(unlock) // 내부 클로져로 작동하기 때문에, 외부에 작성된 것 같은 unlock을 사용할 수 있다. 
+                // lock 안에 unlock이 있어야 하는 이유, 
+            }else{
+                this._locked = false
+            }
+        }
+
+        if(this._locked){
+            return new Promise(resolve => {
+                this._waiting.push(resolve) // 락이 걸려있다면, 대기 큐에 넣도록 한다. 
+            })
+        }
+    }
+}
+```
 
 ## Node.js_Chapter5_Race Conditions 연습문제
 
 ## Node.js_Chapter5_Race Conditions 연습문제 해설
+
+데이터 필터링, 함수에 대해서 락
+
+두 가지 방법에 대해서 경쟁상태에서 벗어날 수 있다.
+
+데이터 필터링
+- 데이터가 무수히 많을 수 있기 때문에 힘들다
+
+```js
+'use strict'
+
+class Lock{
+    constructor(){
+        // _ 는 내부에서 사용하는 변수이기에 사용하는 coding convention 관습이다. 
+        this._locked = false
+        this._waiting = [] // 메시지 큐 등, 대기열이 존재한다는 것  
+    }
+
+    lock(){
+        const unlock = () =>{
+            let nextResolve
+            if(this._waiting.length > 0){
+                nextResolve = this._waiting.pop()
+                nextResolve(unlock) // 내부 클로져로 작동하기 때문에, 외부에 작성된 것 같은 unlock을 사용할 수 있다. 
+                // lock 안에 unlock이 있어야 하는 이유, 
+            }else{
+                this._locked = false
+            }
+        }
+
+        if(this._locked){
+            return new Promise(resolve => {
+                this._waiting.push(resolve) // 락이 걸려있다면, 대기 큐에 넣도록 한다. 
+            })
+        }else{ // 잠겨있지 않다면 
+            this._locked = true
+            return new Promise(resolve => {
+                resolve(unlock)
+            })
+        }
+    }
+}
+
+let total = 0
+async function getTotal(){
+    return total
+}
+
+async function setTotal(value){
+    return total = value
+}
+
+async function increment(value, increment){
+    return value + increment
+}
+
+const account = new Lock()
+
+async function add(){
+    let current, newValue
+    // await 코드 앞에서 unlock을 정의하는 것이 제일 좋다. 
+    unlock = await account.lock() // 시작점 
+
+    current = await getTotal() // 여기서 경쟁상태가 적용될 확률이 매우 높다. 
+    newValue = await increment(current, 20)
+    await setTotal(newValue)
+
+    await unlock() // 트랜잭션의 끝 
+}
+
+async function main(){
+    
+    const transaction1 = add() // 아직 정의하지 않았지만 hoisting 특성으로 괜찮다. 
+    const transaction2 = add()
+    
+    await transaction1
+    await transaction2 // 두 개의 트랜젝션이 경쟁상태에 있다.
+    console.log(await getTotal());
+}
+
+main()
+```
 
 ---
 
