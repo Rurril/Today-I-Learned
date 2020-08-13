@@ -1684,6 +1684,34 @@ resolve 되는 결과들이 차례대로 나오게 된다.
 
 ## Node.js_Chapter5_Race Conditions (1)
 
+싱글 스레드임에도 불과하고, 
+
+두 개 이상의 비동기 패턴을 동시에 시행될 수 있는 런타임이게 때문에 Race conditions에 걸리는 환경이다.(경쟁 상태)
+
+코드 상에 선결조건을 명확하게 하지 않았기 때문에 발생하는 문제.
+
+```js
+[Promise1, Promise2].map(item =>{
+    // 맵 함수 내에서 비동기 코드를 보장하지 않기 때문에 
+    // 교착 상태에 처할 수 있다. 
+})
+```
+
+```js
+const arr = [Promise1, Promise2]
+
+arr.forEach((item) =>{
+    // 비동기 코드가 작동하지 않는다. 
+})
+for(const item of arr){
+    // 비동기 코드가 가능하다. 
+}
+```
+
+forEach와 map에서는 비동기 적인 함수가 실행되지 않는다. 
+
+하고 싶으면 for of 문을 사용하도록 하자.
+
 ## Node.js_Chapter5_Race Conditions (2)
 
 ```js
