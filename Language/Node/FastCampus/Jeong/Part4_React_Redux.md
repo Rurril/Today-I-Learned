@@ -286,11 +286,174 @@ class Timer extends React.Component{
 
 ## React - state hook
 
+모든 것은 함수로 시작해서 함수르 끝을 낼 수 있다.
+
+react hook - 클래스 사용없이 상태 값과 여러가지 react의 기능들을 사용할 수 있다. 
+
+```js
+import React, { useState } from 'react';
+import logo from './logo.svg';
+import './App.css';
+
+
+function App(){
+  // 관행적으로, 변수가 나오고 그것에 대한 set으로 함수를 적는다. -- code convention
+  const [count, setCount] = useState(0) // 초기값으로 0으로 설정 
+  return (
+    <div className = "App">
+      <header className = "App-header">      
+        <button onClick={() => setCount(count + 1)}>{count}</button>
+      </header>
+    </div>
+  )
+}
+```
+
+버튼을 누르면 카운트가 1씩 추가되는 코드 
+
+
 ## state hook 실습 프로젝트
+
+```js
+import React, { useState } from 'react';
+import logo from './logo.svg';
+import './App.css';
+
+const Todo = ({ todo, index, completeTodo, removeTodo }) =>{
+  return (
+    <>
+      <div 
+        className="todo"
+        style={{ textDecoration: todo.isCompleted ? 'line-through' : ''}}  
+      >
+        {todo.text}
+      </div>
+      <div>
+        <button onClick={() => completeTodo(index)}>Complete</button>
+        <button onClick={() => removeTodo(index)}>X</button>
+      </div>
+    </>
+  )
+}
+
+const TodoForm = ({ addTodo }) =>{
+  const [value, setValue] = useState('') // undefined가 아닌 아무것도 없는 값으로 설정. - undefined는 유저가 그것을 알 수 없기 때문 
+  const handleSubmit = e =>{
+    e.preventDefault(); // Event bubbling을 방지 - 해당 이벤트가 중첩되어 발생될 수 있기 때문 
+    if(!value)return
+    addTodo(value)
+    setValue('')
+  }
+  return(
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        className="input"
+        value={value}
+        onChange={e => setValue(e.target.value)}
+      />
+    </form>
+  )
+}
+
+const App = () => {
+  const [todo, setTodo] = useState([]) // 비어있는 array로 초기화 
+  
+  const addTodo = text =>{
+    const newTodos = [...todo, { text }]
+    setTodo(newTodos)
+  }
+
+  const completeTodo = index =>{
+    const newTodos = [...todo]
+    newTodos[index].isCompleted = true
+    setTodo(newTodos)
+  }
+
+  const removeTodo = index =>{
+    const newTodos = [...todo] // 기존의 todo를 복제 
+    newTodos.splice(index, 1)
+    setTodo(newTodos)
+  }
+
+  return (
+    <div className = "App">
+      <div className="todo-list">
+        {
+          todo.map((item, index) =>(
+            <Todo 
+              key={item}
+              index={index}
+              todo={todo}
+              completeTodo={completeTodo}
+              removeTodo={removeTodo}
+            />
+          ))
+        }
+        <TodoForm addTodo={addTodo}/>
+        
+      </div>
+    </div>
+  )
+}
+```
 
 ## Effect Hook 실무 활용
 
+먼저 npm install --save axios 
+
+```js
+import React, { useState, useEffect } from 'react';
+import axios from 'axios'
+// import logo from './logo.svg';
+// import './App.css';
+
+const App = () =>{
+  const [data, setData] = useState({ hits : [] })
+  const [query, setQuery] = useState('react')
+  
+  useEffect(() =>{ 
+    let completed = false
+    
+    async function get(){
+      const result = await axios(`https://hn.algolia.com/api/v1/search?query=${query}`)
+      if(!completed)setData(result.data)
+    }
+
+    get()
+
+    return () =>{
+      completed = true
+    };
+  }, [query]) // 감시에 대한 대상이 query를 할당 
+  return(
+    <>
+      <input value={query} onChange={e => setQuery(e.target.value)}/>
+      <ul>
+        {data.hits.map(item => (
+          <li key={item.objectId}>
+            <a herf={item.url}>{item.title}</a>
+          </li>
+        ))}
+      </ul>
+    </>
+  )
+}
+```
+
+input value인 query가 바뀜으로써 virtual DOM이 랜더링된다!
+
 ## Flux 아키텍처에 대한 이해
+
+Action > Store > React > Action
+
+데이터가 단방향으로 진행된다.
+
+Store <-> Reducers
+
+프로그래밍에서 side effect는 상태를 변경하는 것이다. - 데이터 흐름의 변화를 유발하는 것
+
+
 
 ## Redux 설치
 
