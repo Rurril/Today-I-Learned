@@ -457,16 +457,228 @@ Store <-> Reducers
 
 ## Redux 설치
 
+`npm install redux --save`
+
+
 ## Redux 개념적 접근
+
+데이터가 양방향으로 흐르기 때문에, 두 군대 이상에서 데이터 제어가 이루어지면 데이터의 흐름이 꼬인다. (이러한 문제점을 해결하는 것이 flux 아키텍쳐)
+
+단일 스토어를 통해서 새로운 데이터를 반환하여 불변성을 유지한다.
+
+Redux 특징!
+- One immutable store
+- Actions trigger changes
+- Reducers update state
+
+REDUX ACTION
+- `{type: RATE_COURSE, rating : rating`
+
+
+USING ACTION CONSTANTS
+- `{export const RATE_COURSE = 'RATE_COURSE`
+
+REDUX ACTION CREATOR
+```js
+rateCourse(rating){
+    return{type: RATE_COURSE, rating:rating}
+}
+```
+
 
 ## Redux 기본
 
+REDUX REDUCER
+
+"state is read-only"
+
+```js
+function myReducer(state, action){
+    switch(action.type){
+        case INCREMENT_COUNTER:
+            //return new state based on action passed
+            // 기존의 스테이트가 업데이트 되는 것이 아니라 새로운 스테이트가 생성되어 업데이트되고 저장되는 것. -- 불변성은 지키는 것.
+            // 기존의 상태는 고려하지 않고, 액션을 통해서 새로운 스테이트를 만들어서 데이터의 불변성을 유지하는 것. 
+    }
+}
+```
+
+
+Flux 아키텍쳐를 사용한 Redux 패턴
+
+`UI (triggers) -> Action (sent to)-> Redux (update)-> Store (contains)-> State (defines) -> UI`
+
 ## Redux Component
+
+재사용 가능하도록 컴포넌트화하는 것이 중요하다. 
+```js
+const Comment = props => <div className="Comment">{props.children}</div> // children으로 props를 사용할 수 있다.
+const UserInfo = props => <div className="Avatar">{props.children}</div>
+```
+
+위의 코드만 하더라도 중복된 요소가 있고, 클래스네임만 다르다. 
+
+이러한 것 또한 재사용 가능하도록 만들 수 있다. 
+
+```js
+const Component = props => <div className={props.name}>{props.children}</div> 
+```
+
+```js
+function App() {
+  return (
+    <Component name="Comment">
+      <Component name="User">
+        <img 
+        />
+        <Component name="name">
+          {props.author.name}
+        </Component>
+      </Component>
+      <Component name="Comment-text">
+
+      </Component>
+      <Component name="Comment-date">
+        {formatDate(props.date)}
+      </Component>
+    </Component>
+  );
+}
+```
+
+위와 같이 모두 리팩토링해서 중복되는 부분을 제거해주고 추상화시켰다. 
+
 
 ## React Router
 
+Route 컴포넌트틀 사용해서 랜더링... 
+
+랜더링 요소를 props로 받고, AuthConnector를 통해서 연결해준다. 
+
+스위치 구문을 통해서, 로그인이 된 유저인지 검사를 하고 - 로그인이 된 유저에 대해서 페이지 라우팅을 정의.
+
+또한, 로그인 한 유저의 쿠키나 세션이 만료된 경우 다시 유효성을 검사하도록 구성한다. 
+
+(실제로 현업에서 사용할 수 있는 라우팅 방식)
+
+
+
 ## styled-components
+
+`npm install styled-components --save`
+
+css파일과 styled component는 일반적으로 혼용하지 않는다. 
+```js
+<Component isLoaded={true}>complete</Component>
+<Component isLoaded>complete</Component> // 값이 true라면 생략해도 된다. 
+```
+
+```js
+const Component = styled.div`
+  display : ${props => props.isLoaded ? 'block' : 'none'}
+`
+function App(){
+  return (
+    <Component isLoaded={true}>complete</Component>
+  )
+}
+```
+
+실제로 본다면, Complete가 나오는 것을 알 수 있다. 
+
+isLoaded가 false가 된다면, 아무것도 보이지 않는다. 
+
+기존의 css방법의 경우에 js와 별개로 관리가 되었다. 그렇기에 동적으로 조건문이 있는 랜더링을 하기 어렵다. 
+
+```js
+const color = 'black'
+const Component = styled.div`
+  display : ${props => props.isLoaded ? 'block' : 'none'};
+  color : ${color};
+`
+
+// Wrapper는 Component의 styled를 그대로 가져간다. 
+const Wrapper = styled(Component)`
+  background-color : gray;
+  margin : 20px;
+`
+
+
+function App(){
+  return (
+    <Wrapper>
+      <Component isLoaded={true}>complete</Component>
+    </Wrapper>
+    
+  )
+}
+```
 
 ## Side effects 개념적 접근
 
+Side effects 는 영어 단어의 부작용이 아니라, 프로그래밍에서는 상태변화를 유도하는 모든 요소들을 side effects라고 말한다. 
+
+이러한 것을 관리하는 것으로 REDUX saga를 사용한다.
+
+
+
+
 ## Redux 실습 프로젝트
+
+```js
+import React from 'react';
+import { createStore } from 'redux'
+import { Provider, connect } from 'react-redux'
+import logo from './logo.svg';
+import './App.css';
+
+function Counter({value, add}) {
+  return (
+    <div className="App">
+      <h1>{value}</h1>
+      <button onClick={add}>Add</button>
+    </div>
+  );
+}
+
+function mapStateToProps(state){
+  return {
+    value: state.count
+  }
+}
+
+function mapDispatchToProps(dispatch){
+  return {
+    add : () => dispatch({ type : 'INCREASE'})
+  }
+}
+
+// connect를 통해서 Counter와 연결해주는 컴포넌트를 만들고 App에서 사용한다. 
+const ReduxCounter = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Counter)
+
+function counter(state = { count : 0}, action){ // 리듀서에 해당하는 부분
+
+  const { count } = state
+  switch(action.type){
+    case 'INCREASE':
+      return { count : count + 1 }
+    default :
+      return state
+  }
+
+}
+
+function App(){
+  const store = createStore(counter)
+  return(
+    <Provider store={store}>
+      <ReduxCounter/>
+    </Provider>
+  )
+}
+
+export default App;
+```
