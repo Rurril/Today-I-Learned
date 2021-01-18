@@ -13,6 +13,8 @@
 
 > LiveData and LiveData observers
 
-> 
+> Backing field and Backing Properties
+
+> Data binding with ViewModel and LiveData
 
 
